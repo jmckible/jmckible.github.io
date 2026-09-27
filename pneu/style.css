@@ -1,9 +1,16 @@
-:root { color-scheme: light dark; --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5d5a54; --rule: #dedad2; --accent: #8a4b1f; }
-@media (prefers-color-scheme: dark) { :root { --bg: #1a1918; --fg: #e8e5df; --muted: #a39f97; --rule: #3a3835; --accent: #e0a36f; } }
+/* pneu's colours (brand/README.md in the pneu repo): the page is paper with
+   ink on it, and the stamp is the red. In the dark the paper becomes ink and
+   links take the petit bleu, since red reads poorly on ink. */
+:root { color-scheme: light dark; --bg: #e2d3ab; --fg: #221c1d; --muted: #4f4636; --rule: #c9b98f; --accent: #a8261f; }
+@media (prefers-color-scheme: dark) { :root { --bg: #221c1d; --fg: #e2d3ab; --muted: #b3a785; --rule: #43393a; --accent: #86aecb; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 Georgia, "Iowan Old Style", serif; }
 main { max-width: 38rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+.stamp { display: block; width: 15rem; max-width: 70%; height: auto; margin: 0 0 2.5rem -0.5rem; }
+.stamp.small { width: 10rem; }
 h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .25rem; }
+/* The pen name: its viewBox leaves room above the letters, cropped here. */
+h1.name img { display: block; width: 11rem; height: 4.5rem; object-fit: cover; object-position: center bottom; }
 h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
 p, li { margin: 0 0 .75rem; }
 .lede { color: var(--muted); margin-bottom: 2rem; }
