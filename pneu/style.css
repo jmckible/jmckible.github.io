@@ -14,9 +14,9 @@ h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .25rem; }
 h1.name { margin-bottom: .75rem; }
 /* Only the postmark is printed: the inked stamp (baked, never a live filter)
    is multiplied into the paper so its fibres show through. On the dark ground
-   multiply would swallow it, so there it sits on top. Type stays crisp. */
+   the lighter-inked dark cut sits on top. Type stays crisp. */
 .stamp { mix-blend-mode: multiply; }
-@media (prefers-color-scheme: dark) { .stamp { mix-blend-mode: normal; filter: brightness(1.7) saturate(.85); } }
+@media (prefers-color-scheme: dark) { .stamp { mix-blend-mode: normal; } }
 h1.name img { display: block; width: 11rem; height: auto; }
 h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
 p, li { margin: 0 0 .75rem; }
