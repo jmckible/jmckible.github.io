@@ -9,8 +9,8 @@ main { max-width: 38rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
 .stamp { display: block; width: 15rem; max-width: 70%; height: auto; margin: 0 0 2.5rem -0.5rem; }
 .stamp.small { width: 10rem; }
 h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .25rem; }
-/* The pen name: its viewBox leaves room above the letters, cropped here. */
-h1.name img { display: block; width: 11rem; height: 4.5rem; object-fit: cover; object-position: center bottom; }
+h1.name { margin-bottom: .75rem; }
+h1.name img { display: block; width: 11rem; height: auto; }
 h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
 p, li { margin: 0 0 .75rem; }
 .lede { color: var(--muted); margin-bottom: 2rem; }
