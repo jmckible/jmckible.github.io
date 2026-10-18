@@ -1,0 +1,76 @@
+<div class="albums-stage" aria-labelledby="albums-h">
+
+  <!-- the object: a plain paper slip, the black sheet of holes sliding out of it,
+       and the disc that was punched from its centre -->
+  <div class="albums-deck">
+    <p class="albums-lately k-pen">on the grid, lately.</p>
+
+    <div class="albums-sheet k-paper k-black k-stitch" data-thread="cream" data-seed="albums-sheet" role="group" aria-label="The grid: favourites from the dashboard, cycling">
+      <k-hole album="all" shape="rect" salt="1" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="2" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="3" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="4" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="5" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="6" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="7" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="8" cycle="7"></k-hole>
+      <k-hole album="all" shape="rect" salt="9" cycle="7"></k-hole>
+    </div>
+
+    <div class="albums-sleeve k-paper k-cream" data-seed="albums-sleeve">
+      <span class="albums-at k-slip" data-seed="albums-at">@@ SUPER+A @@ music</span>
+      <h2 class="albums-title k-pen" id="albums-h"><span class="l1">The album grid,</span> <span class="l2">and omamp behind it</span></h2>
+      <k-hole class="albums-label" album="0" shape="round" caption reveal seed="albums-label">
+        <span data-face="back" class="albums-stock">
+          <span class="k-slip" data-seed="albums-stock-slip">- STOCK</span>
+          <span class="albums-stock-line k-pen">open a browser, find the album, hope the tab survives the day</span>
+        </span>
+      </k-hole>
+    </div>
+  </div>
+
+  <!-- the reading: liner notes, folded once, tucked under the slip -->
+  <article class="albums-notes k-paper" data-seed="albums-notes">
+    <i class="albums-crease" aria-hidden="true"></i>
+    <div class="albums-side a">
+      <ul class="albums-plus" aria-label="What mine does">
+        <li><b>+</b><span>a curated grid of albums, fed by my dashboard, on one key</span></li>
+        <li><b>+</b><span>on the NAS &rarr; MPD plays it; anywhere else &rarr; Apple Music opens to it</span></li>
+        <li><b>+</b><span>album links on the dashboard itself open on this machine, not in a tab</span></li>
+      </ul>
+      <div class="albums-why">
+        <p>A personal dashboard already knew what I was listening to: featured slots, favourites, new releases from KEXP. omamp puts that grid on the desktop as a Quickshell overlay, keyboard first, in the spirit of Winamp and a folder of MP3s.</p>
+        <p>The dashboard stays the truth for curation. The NAS is the truth for what exists locally. omamp is the match layer between them, and the split is what keeps either side from having to know about the other.</p>
+      </div>
+    </div>
+    <div class="albums-side b">
+      <dl class="albums-credits">
+        <div><dt>what it is</dt><dd>Quickshell overlay + MPD + a sync that pulls curation from the dashboard's API.</dd></div>
+        <div><dt>the trick</dt><dd>Dashboard album links hit a local listener over Tailscale Funnel, so a click on a web page summons the player here.</dd></div>
+        <div><dt>fallback</dt><dd>Apple Music as a Helium PWA, summoned into the same slot. The reason Widevine is installed.</dd></div>
+      </dl>
+      <p class="albums-links">
+        <a class="k-slip k-blue" data-seed="albums-l1" href="https://github.com/jmckible/omamp">github.com/jmckible/omamp</a>
+        <a class="k-slip k-blue" data-seed="albums-l2" href="https://github.com/jmckible/dashboard">github.com/jmckible/dashboard</a>
+      </p>
+    </div>
+  </article>
+  <!-- the toll: music's cost, told from the browser's side. The round 6 web entry's library
+       pocket, moved here and taped to the liner notes under the fallback line. -->
+  <aside class="albums-toll" aria-label="The toll: Widevine">
+    <div class="albums-pocketwrap">
+      <div class="albums-card k-paper k-cream" data-seed="albums-card" data-tilt="-4">
+        <span class="albums-card-h">WIDEVINE</span>
+        <span class="albums-card-r"><em>author</em>Google</span>
+        <span class="albums-card-r"><em>copy</em>Mozilla, for Firefox</span>
+        <span class="albums-card-r"><em>borrower</em>Helium</span>
+        <span class="albums-card-r"><em>for</em>Apple Music</span>
+        <span class="albums-stamp">ON LOAN</span>
+      </div>
+      <div class="albums-pocket k-paper k-manila" data-seed="albums-pocket" data-tape="tl"><span class="albums-pocket-l">THE TOLL</span></div>
+    </div>
+    <div class="albums-tollnote k-paper k-cream" data-seed="albums-tollnote" data-tape="top" data-tilt="1">
+      <p>Leaving Chrome has one toll, and it lands on music. Helium doesn't bundle <b>Widevine</b>, Google's DRM module, so Apple Music won't play until you fetch the copy Mozilla distributes for Firefox and point Helium at it with a one-line JSON file. To get away from Google's browser, you borrow Google's DRM from Firefox. <!-- NEW COPY -->The browser above cuts away what I didn't ask for; this is the one piece I had to tape back in.</p>
+    </div>
+  </aside>
+</div>

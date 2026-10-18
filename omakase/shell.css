@@ -1,0 +1,91 @@
+/* The shell: the page every section plugs into. Layout, type and the day only; every
+   surface is a kit material. Section styles live in sections/<slug>/section.css. */
+
+:root {
+  --r-book: 'Source Serif 4', Georgia, serif;   /* a book face for long reading */
+  --r-corner: 60px;                              /* the docked icon's size */
+  --r-gutter: 32px;
+}
+html, body { margin: 0; }
+body { font-family: var(--k-prose); font-size: 18px; line-height: 1.6; }
+p { margin: 0 0 1em; }
+a { color: inherit; text-decoration-color: color-mix(in srgb, currentColor 38%, transparent); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--k-thread); }
+code { font-family: var(--k-code); font-size: .86em; }
+.r6-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* ============================================================ the day
+   One gradient down the whole ground, rebuilt by shell.js only when the page's height
+   changes. Each section is lit (almost) evenly; the light turns across the dividers.
+   --day doesn't inherit: as a plain custom property on body, every rebuild restyled all
+   ~1,640 elements on the page (15-36 ms a time at 2400 wide), not just the body. */
+@property --day { syntax: '*'; inherits: false; }
+body.k-ground {
+  background:
+    url(./identity/kit/tex/paper.webp) 0 0 / 420px,
+    url(./identity/kit/tex/mottle.webp) 0 0 / 1100px,
+    var(--day, linear-gradient(#ede6cf 0%, #e3d5ad 25%, #d6b890 50%, #c8967f 65%, #2c2b38 75%, #1e1f28 100%)) 0 0 / 100% 100% no-repeat;
+  background-blend-mode: normal, soft-light, normal;
+}
+/* sections (and the footer) at night write in cream */
+.night { color: var(--k-cream); --k-pen-ink: var(--k-cream); --k-muted: #b9b2a6; }
+.night a:hover { text-decoration-color: var(--k-cream); }
+
+/* every section root: shell.js sets --light, --light-end, --hour, --ink, data-period */
+.r6-section { position: relative; color: var(--ink, var(--k-ink)); }
+
+/* a section that hasn't been built yet */
+.r6-pending { min-height: 46vh; display: grid; place-items: center; padding: 60px 16px; }
+
+/* ============================================================ the opening */
+.r6-opening {
+  --icon: clamp(180px, min(34vw, 52vh), 440px);
+  position: relative; min-height: 100vh; min-height: 100svh; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; padding: 48px 16px 56px;
+}
+.r6-spot { position: relative; flex: none; width: var(--icon); height: var(--icon); }
+#said { position: absolute; left: 58%; top: calc(100% + var(--icon) * .07); margin: 0; white-space: nowrap;
+  --k-size: calc(var(--icon) * .085); rotate: -5deg; clip-path: inset(0 100% 0 0); transition: opacity .4s; }
+.r6-docked #said { opacity: 0; }
+
+/* the laid icon (identity/icon/laying.js draws into #icon at 34px modules: 510px). It is
+   fixed; shell.js glues it to .r6-spot, then shrinks it into the corner as you scroll. */
+.r6-lay { position: fixed; left: 0; top: 0; z-index: 40; width: 510px; height: 510px; transform-origin: 0 0;
+  visibility: hidden; pointer-events: none; text-decoration: none; transition: opacity .5s; }
+.r6-lay.ready { visibility: visible; }
+.r6-lay.home { pointer-events: auto; cursor: pointer; }
+.r6-lay.rest { opacity: 0; pointer-events: none; }
+.r6-lay #icon { position: absolute; inset: 0; }
+.r6-lay .carrier { position: absolute; transform-origin: 50% 50%; visibility: hidden; }
+.r6-lay .carrier > .k-paper { position: absolute; }
+.r6-lay .lift { position: absolute; margin-left: -4000px; transform-origin: calc(50% + 4000px) 50%; border-radius: 3px; box-shadow: 4000px 0 16px 1px rgb(40 24 10 / .36); opacity: 0; }
+.r6-lay .k-tape.lay { opacity: 0; }
+/* the offcut heap stays in the opening: it's swept away as the icon leaves */
+.r6-lay [data-seed^="tail-"] { transition: opacity .35s; }
+.r6-lay.docked [data-seed^="tail-"] { opacity: 0; }
+
+/* ============================================================ dividers: the icon, a different way each time */
+.r6-div { position: relative; padding: clamp(64px, 13vh, 140px) 16px; }
+.r6-div .row { max-width: 1100px; margin: 0 auto; }
+.r6-div .ic { position: relative; margin-left: calc((100% - var(--w)) * var(--x)); rotate: var(--r); }
+.r6-div .cap { position: relative; display: inline-block; margin: 26px 0 0 calc((100% - var(--w)) * var(--x)); font-size: 12px; }
+.r6-hole-sheet { background: url(./identity/kit/tex/paper.webp) 40px 90px / 420px, url(./identity/kit/tex/mottle.webp) 0 0 / 900px, var(--k-paper); }
+/* ?only=: a plain turn of the light between the opening and the one section */
+.r6-turn { height: 28vh; }
+
+/* ============================================================ the footer */
+.r6-foot { padding: 40px 16px 110px; display: grid; justify-items: center; }
+.r6-foot .scrap { display: grid; justify-items: center; gap: 26px; padding: 54px 60px 44px; color: var(--k-ink); }
+.r6-foot-mark { position: relative; }
+.r6-foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 16px; }
+.r6-foot-links a { text-decoration: none; }
+.r6-foot-links a:hover { text-decoration: underline; }
+
+@media (max-width: 760px) {
+  :root { --r-corner: 44px; --r-gutter: 16px; }
+  body { font-size: 17px; }
+  .r6-opening { padding: 40px 16px 44px; --icon: min(46vw, 30vh); }
+  #said { left: 64%; --k-size: 17px; }
+  .r6-foot .scrap { padding: 44px 30px 36px; }
+}
+.r6-foot[hidden] { display: none; }

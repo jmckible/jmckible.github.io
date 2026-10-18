@@ -1,0 +1,194 @@
+/* The album grid: a plain paper slip for a 7" single, a black sheet of album holes
+   sliding out of it as you scroll in, the disc punched from the slip's centre lying
+   face down with stock written on its back, and the liner notes tucked underneath.
+   Night: the shell sets .night here, so pen ink and --k-muted turn cream for the ground.
+   Everything written on the paper puts the dark pen back; the papers keep their own
+   colour instead of mixing in the dark ground, and the black sheet gets a cream stitch
+   so its edge holds against the night. */
+
+/* paper keeps its pen dark; only the ground ("on the grid, lately.") writes in cream */
+#s-albums :is(.albums-sleeve, .albums-notes, .albums-toll) { --k-pen-ink: #1f1a1d; --k-muted: #5b544c; }
+
+#s-albums {
+  --albums-sl: 470px;                     /* the slip's side */
+  --albums-left: 21%;                     /* where the slip sits in the deck */
+  --albums-in: 3% 0;                      /* the sheet, barely out */
+  --albums-out: 69% 0;                    /* the sheet, pulled out */
+  padding: 90px 16px 150px;
+}
+#s-albums .albums-stage { position: relative; max-width: 1160px; margin: 0 auto; view-timeline-name: --albums-stage; }
+
+/* ------------------------------------------------------------ the deck (the object) */
+#s-albums .albums-deck { position: relative; height: calc(var(--albums-sl) + 96px); }
+
+#s-albums .albums-sleeve {
+  position: absolute; z-index: 3;
+  left: var(--albums-left); top: 60px;
+  width: var(--albums-sl); aspect-ratio: 1;
+  --k-paper: #e6dcc3;                     /* a touch cooler under lamp light */
+  rotate: -1.3deg;
+}
+#s-albums .albums-at { position: absolute; z-index: 2; top: -13px; left: 26px; rotate: -2.4deg; }
+
+/* the title is written on the slip in pen, above and below the hole */
+#s-albums .albums-title { position: absolute; inset: 0; margin: 0; pointer-events: none; --k-size: 38px; line-height: 1.05; }
+#s-albums .albums-title span { position: absolute; white-space: nowrap; }
+#s-albums .albums-title .l1 { top: 10%; left: 9%; rotate: -2deg; }
+#s-albums .albums-title .l2 { bottom: 8.5%; right: 8%; rotate: -1deg; }
+
+/* the die-cut centre hole: the newest favourite shows through */
+#s-albums .albums-label {
+  position: absolute; left: 27%; top: 27%; width: 46%; aspect-ratio: 1;
+  --k-hole-m: 3px;
+  --k-cap-x: 34%; --k-cap-y: -1.35em; --k-cap-r: 2deg; --k-cap-w: 22em;
+  /* the punched disc lands face down on the ground beside the slip */
+  --k-piece-x: -150%; --k-piece-y: 40%; --k-piece-r: -13deg; --k-piece-s: .96;
+  --k-piece-c: #e2d8bf;
+}
+#s-albums .albums-label .k-hole-cap { font-size: .74rem; }
+#s-albums .albums-stock { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 64%; }
+#s-albums .albums-stock .k-slip { font-size: 11px; rotate: 3deg; }
+#s-albums .albums-stock-line { --k-size: 18px; line-height: 1.1; rotate: -3deg; text-wrap: balance; color: var(--k-pen-ink); }
+
+/* the black sheet of holes, inside the slip, pulled out as the section comes in */
+#s-albums .albums-sheet {
+  position: absolute; z-index: 2;
+  left: calc(var(--albums-left) + 12px); top: 72px;
+  width: calc(var(--albums-sl) * .94); aspect-ratio: 1; box-sizing: border-box;
+  padding: 5.2%;
+  display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 3.4%;
+  rotate: .8deg;
+  translate: var(--albums-out);
+  --k-paper: #151417;                     /* a true black, a step under the night ground */
+}
+#s-albums .albums-sheet k-hole { aspect-ratio: auto; width: 100%; height: 100%; --k-hole-m: 2px; }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #s-albums .albums-sheet {
+      animation: albums-pull linear both;
+      animation-timeline: --albums-stage;
+      animation-range: entry 10% cover 42%;
+    }
+  }
+}
+@keyframes albums-pull {
+  from { translate: var(--albums-in); }
+  to   { translate: var(--albums-out); }
+}
+/* no scroll timeline: shell-less fallback, section.js adds .albums-js then .albums-go */
+#s-albums .albums-sheet.albums-js:not(.albums-go) { translate: var(--albums-in); }
+#s-albums .albums-sheet.albums-js { transition: translate 1.6s cubic-bezier(.3, .6, .2, 1); }
+
+#s-albums .albums-lately {
+  position: absolute; z-index: 4; margin: 0;
+  left: calc(var(--albums-left) + var(--albums-sl) * 1.02); top: 4px;
+  --k-size: 30px; rotate: -4deg; white-space: nowrap;
+  color: var(--ink, #f3eee1);
+}
+
+/* ------------------------------------------------------------ the liner notes */
+#s-albums .albums-notes {
+  position: relative; z-index: 1;
+  --k-paper: #f1ece0;
+  color: #211b1c;
+  max-width: 1060px; box-sizing: border-box;
+  margin: -104px auto 0;
+  padding: 150px 64px 64px;
+  display: grid; grid-template-columns: minmax(0, 590px) minmax(0, 1fr); gap: 0 76px;
+  rotate: .5deg;
+}
+/* folded once: a soft crease between the two sides */
+#s-albums .albums-crease {
+  position: absolute; z-index: 0; top: 4px; bottom: 4px; width: 46px;
+  left: calc(64px + min(590px, 100%) + 15px);
+  background: linear-gradient(90deg, transparent, rgb(60 40 30 / .06) 46%, rgb(255 255 250 / .5) 54%, transparent);
+  pointer-events: none;
+}
+#s-albums .albums-side { position: relative; z-index: 1; }
+
+#s-albums .albums-plus { list-style: none; margin: 0 0 34px; padding: 0; font-family: var(--k-code); font-size: 15.5px; line-height: 1.55; }
+#s-albums .albums-plus li { display: grid; grid-template-columns: 1.5em 1fr; margin: 0 0 9px; }
+#s-albums .albums-plus b { font-weight: 600; color: #2f6a35; }
+#s-albums .albums-plus span {
+  background: linear-gradient(177deg, transparent 40%, rgb(239 211 79 / .46) 43%, rgb(239 211 79 / .36) 86%, transparent 89%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  padding: 0 .2em; margin: 0 -.2em;
+}
+
+#s-albums .albums-why { font-family: var(--r-book); font-size: 20px; line-height: 1.62; }
+#s-albums .albums-why p { margin: 0 0 .9em; }
+#s-albums .albums-why p:last-child { margin: 0; }
+
+#s-albums .albums-credits { margin: 4px 0 0; }
+#s-albums .albums-credits div { margin: 0 0 24px; }
+#s-albums .albums-credits dt { font-family: var(--k-type); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #5b544c; margin: 0 0 3px; }
+#s-albums .albums-credits dd { margin: 0; font-family: var(--r-book); font-size: 18px; line-height: 1.52; }
+
+#s-albums .albums-links { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 30px 0 0; }
+#s-albums .albums-links a { text-decoration: none; }
+#s-albums .albums-links a:nth-child(2) { rotate: -1.2deg; margin-left: 10px; }
+
+/* ------------------------------------------------------------ the toll */
+/* the library pocket, taped to the liner notes just under the fallback line, card half out */
+#s-albums .albums-toll { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 460px) 220px;
+  grid-template-areas: "note pocket"; gap: 44px; align-items: start;
+  width: max-content; max-width: 100%; margin: -46px 6% 0 auto; }
+#s-albums .albums-pocketwrap { grid-area: pocket; }
+#s-albums .albums-tollnote { grid-area: note; }
+#s-albums .albums-pocketwrap { position: relative; width: 210px; height: 290px; rotate: 3deg; }
+#s-albums .albums-card { position: absolute; left: 20px; top: 0; width: 170px; height: 230px; box-sizing: border-box; padding: 14px 14px 0;
+  display: flex; flex-direction: column; gap: 6px; font-family: var(--k-type); font-size: 13px; color: #33302a; }
+#s-albums .albums-card-h { font-size: 15px; letter-spacing: .12em; margin-bottom: 4px; }
+#s-albums .albums-card-r em { display: block; font-style: normal; font-size: 10.5px; color: #8a8173; letter-spacing: .06em; text-transform: uppercase; }
+#s-albums .albums-stamp { position: absolute; right: 10px; top: 58px; rotate: -14deg; font-size: 17px; letter-spacing: .16em; color: #b8433d; opacity: .8; }
+#s-albums .albums-pocket { position: absolute; left: 0; right: 0; bottom: 0; height: 118px; display: grid; place-items: center; }
+#s-albums .albums-pocket-l { font-family: var(--k-type); font-size: 14px; letter-spacing: .3em; color: #5a4a2c; }
+#s-albums .albums-tollnote { margin-top: 96px; padding: 26px 30px 12px; font-family: var(--r-book); font-size: 19px; line-height: 1.6; color: #211b1c; }
+#s-albums .albums-tollnote p { margin: 0 0 1em; }
+#s-albums .albums-tollnote b { font-weight: 600; }
+
+/* ------------------------------------------------------------ narrower */
+@media (max-width: 1080px) {
+  #s-albums { --albums-sl: 420px; --albums-left: 8%; }
+  #s-albums .albums-notes { grid-template-columns: minmax(0, 1fr) minmax(0, 250px); gap: 0 56px; padding: 140px 44px 56px; }
+  #s-albums .albums-crease { left: auto; right: calc(44px + 250px + 5px); }
+}
+
+/* phones and small tablets: the sheet comes out of the top, the notes run in one column */
+@media (max-width: 760px) {
+  #s-albums {
+    --albums-sl: min(320px, calc(100vw - 64px));
+    --albums-left: calc(50% - var(--albums-sl) / 2 - 4px);
+    --albums-in: 0 -4%;
+    --albums-out: 0 -63%;
+    padding: 64px 16px 110px;
+  }
+  #s-albums .albums-deck { height: calc(var(--albums-sl) * 1.66 + 56px); }
+  #s-albums .albums-sleeve { top: calc(var(--albums-sl) * .66 + 44px); }
+  #s-albums .albums-sheet { top: calc(var(--albums-sl) * .66 + 54px); left: calc(var(--albums-left) + 10px); }
+  #s-albums .albums-lately { left: auto; right: 2px; top: 0; --k-size: 23px; }
+  #s-albums .albums-title { --k-size: 26px; }
+  #s-albums .albums-at { font-size: 11.5px; top: -11px; left: 16px; }
+  #s-albums .albums-label {
+    --k-cap-x: 22%; --k-cap-y: -1.5em;
+    --k-piece-x: 30%; --k-piece-y: 160%; --k-piece-r: 9deg; --k-piece-s: 1.12;
+  }
+  #s-albums .albums-label .k-hole-cap { font-size: 10.5px; }
+  #s-albums .albums-stock-line { --k-size: 14px; }
+  #s-albums .albums-stock { width: 80%; gap: 5px; }
+  #s-albums .albums-stock .k-slip { font-size: 9.5px; }
+
+  #s-albums .albums-notes {
+    display: block; margin-top: -30px; padding: 206px 22px 40px; rotate: .3deg;
+  }
+  #s-albums .albums-crease { display: none; }
+  #s-albums .albums-plus { font-size: 14px; }
+  #s-albums .albums-why { font-size: 18px; line-height: 1.6; }
+  #s-albums .albums-credits { margin-top: 34px; }
+  #s-albums .albums-credits dd { font-size: 17px; }
+
+  #s-albums .albums-toll { grid-template-columns: 1fr; grid-template-areas: "pocket" "note"; gap: 0; width: auto; margin: -12px 0 0; justify-items: start; }
+  #s-albums .albums-pocketwrap { margin-left: 22px; }
+  #s-albums .albums-tollnote { margin: -14px 0 0; padding: 24px 20px 10px; font-size: 18px; }
+}

@@ -1,0 +1,86 @@
+<div class="pl-wrap">
+
+  <header class="pl-head">
+    <div class="pl-tags">
+      <span class="k-slip" data-tilt="-1.4" data-seed="pl-at">@@ .bar.id @@ shell.json</span>
+      <a class="k-slip k-blue" data-tilt="1" data-seed="pl-c1" href="https://github.com/jmckible/drivetrain/commit/763abdd">763abdd</a>
+      <a class="k-slip k-blue" data-tilt="-.8" data-seed="pl-c2" href="https://github.com/jmckible/drivetrain/commit/659e1bc">659e1bc</a>
+      <a class="k-slip k-blue" data-tilt="1.6" data-seed="pl-c3" href="https://github.com/jmckible/drivetrain/commit/fa51521">fa51521</a>
+    </div>
+    <h2 class="k-pen">The pill bar</h2>
+  </header>
+
+  <!-- the bench: a monitor cut through the morning paper, showing the morning wallpapers,
+       the stock strip across its top. The scissors trim it to a capsule; the offcuts fall
+       below and stay there. -->
+  <div class="pl-bench">
+    <p class="pl-hint k-pen" aria-hidden="true">tap the clock<svg viewBox="0 0 60 70" width="46" height="54"><path d="M8 4c20 2 38 14 40 34 1 9-2 17-7 24m7-13-6 13-12-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+    <!-- NEW COPY -->
+    <p class="pl-now k-pen">a morning one, <span>like the paper</span><svg viewBox="0 0 60 70" width="40" height="48" aria-hidden="true"><path d="M52 4C36 8 20 20 17 38c-1 9 1 17 5 24m-8-12 8 12 11-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+
+    <div class="pl-screen">
+      <k-hole wallpaper="morning" salt="2" cycle="7" shape="rect" caption></k-hole>
+      <div class="pl-adds">
+        <span class="k-slip k-yellow" data-seed="pl-add1" data-tilt="-1.2"><b>+</b> a floating capsule in the corner: workspaces, battery, clock</span>
+        <span class="k-slip k-yellow" data-seed="pl-add2" data-tilt=".9"><b>+</b> double-click the clock and the full bar comes back, exactly as it was</span>
+      </div>
+    </div>
+
+    <!-- section.js cuts the strip into pieces here: the capsule and two offcuts -->
+    <div class="pl-strip">
+      <div class="pl-face" role="button" tabindex="0" aria-pressed="false"
+           aria-label="The pill bar, cut from the full-width strip. Press to bring the full bar back.">
+        <span class="date">Monday September 14</span>
+        <span class="time">4:35 PM</span>
+        <span class="ws" aria-hidden="true"><i class="on"></i><i class="dot"></i><i class="sq"></i></span>
+        <svg class="chip" aria-hidden="true" viewBox="0 0 20 20"><g fill="currentColor"><rect x="5.6" y="1.5" width="3.2" height="17" rx="1.6"/><rect x="11.2" y="1.5" width="3.2" height="17" rx="1.6"/><rect x="1.5" y="5.6" width="17" height="3.2" rx="1.6"/><rect x="1.5" y="11.2" width="17" height="3.2" rx="1.6"/></g></svg>
+      </div>
+      <p class="pl-minus"><b>-</b> a full-width strip that reserves a strut across the top of every monitor</p>
+    </div>
+
+    <p class="pl-pile"><span class="k-slip k-grey" data-seed="pl-pile" data-tilt="1.2"><b>-</b> a full-width strip that reserves a strut across the top of every monitor</span></p>
+
+    <div class="pl-scissors" aria-hidden="true"></div>
+  </div>
+
+  <div class="pl-desk">
+    <!-- the reading text: a measurement slip, with the specimen taped to its head -->
+    <article class="pl-slip k-paper k-cream" data-torn="top" data-seed="pl-slip" data-tilt="-.6">
+      <figure class="pl-specimen">
+        <figcaption class="top">the whole bar, actual size</figcaption>
+        <div class="shot" data-tape="left right" data-seed="pl-shot">
+          <img src="../../img/pill-centered.png" alt="The pill bar: a rounded dark capsule showing the date, time, three workspace dots and a Slack glyph" width="496" height="56" loading="lazy">
+        </div>
+        <figcaption class="bot">27 × 286 logical px, alpha 0.78 over the wallpaper</figcaption>
+      </figure>
+
+      <div class="why">
+        <p>The bar is furniture, and most of the time I want less of it. The pill draws over the wallpaper and reserves nothing; tiled windows get a generated top clearance instead, so the layout is a fact about whichever bar is live rather than a constant in a config file.</p>
+        <p>Its ground is deepened away from the theme's <code>bar.background</code> rather than taken from it. The wallpaper rotates through 94 images by time of day and weather, and <mark>a 22% pass-through of a light wallpaper halves the clock's contrast</mark>. So the numbers were <mark>measured against all 94, not picked</mark>.</p>
+      </div>
+
+      <hr class="k-seam" data-thread="ink">
+
+      <dl class="how">
+        <dt><span class="k-slip k-grey" data-seed="pl-dt1">what it is</span></dt>
+        <dd>A Quickshell bar plugin, <code>drivetrain.bar</code>, selected by <code>bar-shape</code>.</dd>
+        <dt><span class="k-slip k-grey" data-seed="pl-dt2">toggle</span></dt>
+        <dd>Style › Menu Bar › Corner Pill, or double-click the pill's clock. Hot-swaps, no restart.</dd>
+        <dt><span class="k-slip k-grey" data-seed="pl-dt3">record</span></dt>
+        <dd><a href="https://github.com/jmckible/drivetrain/blob/main/docs/pill-bar.md">docs/pill-bar.md</a>, the measurement.</dd>
+      </dl>
+    </article>
+
+    <!-- a swatch card: every wallpaper in the rotation, darkest to lightest under the
+         pill's corner, each with the pill laid over it at 0.78 -->
+    <aside class="pl-card k-paper k-grey" data-seed="pl-card" data-tape="top" data-tilt="1.4"
+           aria-label="Swatch card: all 94 wallpapers, ordered from darkest to lightest under the pill, each with the pill composited over it at alpha 0.78">
+      <p class="k-pen pl-card-say">all 94, under the pill</p>
+      <span class="pl-end k-slip" data-seed="pl-end1">darkest</span>
+      <div class="pl-chips"></div>
+      <span class="pl-end last k-slip" data-seed="pl-end2">lightest</span>
+      <p class="pl-worst k-pen" aria-hidden="true">the two worst</p>
+      <span class="pl-card-name">alpha 0.78 · 94 wallpapers</span>
+    </aside>
+  </div>
+</div>

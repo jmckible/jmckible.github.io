@@ -1,0 +1,485 @@
+/* my omakase: the identity kit.
+   Construction paper is the ground; felt is what you touch; tissue is where layers cross;
+   tape and stitches hold things; typed slips label them; the pen hand talks.
+   Every texture is a baked tile in tex/. kit.js cuts the edges and bakes the shadows once
+   per piece; nothing here costs anything per frame while the page scrolls. */
+
+@import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&family=Special+Elite&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ---------------------------------------------------------------- colour ---------- */
+/* Each colour exists in three materials. A colour class sets all three; the material on
+   the same element picks its own. They don't inherit, so a piece never takes its
+   parent's colour by accident. */
+@property --k-paper  { syntax: '<color>'; inherits: false; initial-value: #e2d3ab; }
+@property --k-felt   { syntax: '<color>'; inherits: false; initial-value: #d6d0c3; }
+@property --k-tissue { syntax: '<color>'; inherits: false; initial-value: #f7a9c9; }
+
+:root {
+  /* the sheet, the table, the name, the pen */
+  --k-manila: #e2d3ab;
+  --k-manila-back: #d6c08a;
+  --k-kraft: #a67a4f;
+  --k-name: #2e2927;
+  --k-ink: #221c1d;
+  --k-pen-ink: #1f1a1d;
+  --k-core: #fbf8f0;          /* the white inside of paper, where it tears */
+  --k-cream: #f3eee1;         /* typed slips */
+  --k-thread: #d8367f;        /* stitches, unless a piece says otherwise */
+  --k-muted: #5b544c;
+
+  --k-type: 'Special Elite', 'Courier Prime', 'Courier New', monospace;
+  --k-prose: 'IBM Plex Sans', system-ui, sans-serif;
+  --k-code: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* the hand: Beth Ellen. One property names it; the rest are its size and weight
+     corrections, kept so any hand that ever replaces it needs only new values here. */
+  --k-hand: 'Beth Ellen', cursive;
+  --k-hand-scale: 1;
+  --k-hand-weight: 0;
+  --k-hand-sw: 0;             /* the same weight, unitless, for SVG strokes */
+  --k-hand-lh: 1.35;
+  --k-hand-rise: 0;
+
+  --k-pad: 24px;              /* room around a piece for its shadow and fibres */
+  --k-tape-h: 26px;
+}
+
+/*                     paper      felt       tissue */
+.k-manila  { --k-paper: #e2d3ab; --k-felt: #dcc394; --k-tissue: #eadfc0; }
+.k-kraft   { --k-paper: #a67a4f; --k-felt: #9a6e45; --k-tissue: #c49a6c; }
+.k-yellow  { --k-paper: #efd34f; --k-felt: #e9b22c; --k-tissue: #fbd13a; }
+.k-green   { --k-paper: #3f7f45; --k-felt: #1d8659; --k-tissue: #3aa377; }
+.k-red     { --k-paper: #df5a33; --k-felt: #dc512c; --k-tissue: #f4693f; }
+.k-blue    { --k-paper: #86aecb; --k-felt: #2aa3b0; --k-tissue: #39bcc8; }
+.k-pink    { --k-paper: #e7a0ad; --k-felt: #ec9fbf; --k-tissue: #f7a9c9; }
+.k-magenta { --k-paper: #cf5a90; --k-felt: #d8367f; --k-tissue: #ee4f98; }
+.k-grey    { --k-paper: #cfc9bb; --k-felt: #d6d0c3; --k-tissue: #d9d4c8; }
+.k-cream   { --k-paper: #f3eee1; --k-felt: #efe8d8; --k-tissue: #f6f1e4; }
+.k-black   { --k-paper: #2f2c2a; --k-felt: #2c1a1f; --k-tissue: #3a2e2e; }
+
+/* ---------------------------------------------------------------- the page -------- */
+/* Pieces, tape and flipped-out pieces spill past their boxes on purpose. Clip the page
+   sideways so a spill never widens a phone's layout viewport. (The root takes hidden so the
+   body keeps its own clip instead of handing it to the viewport, which phones ignore.) */
+html:has(> body.k-ground) { overflow-x: hidden; }
+body.k-ground, .k-clip-x { overflow-x: clip; }
+
+/* ---------------------------------------------------------------- the ground ------ */
+/* Construction paper, sun-faded. Put it on body or on any big section. */
+.k-ground {
+  --k-c: var(--k-paper);
+  background:
+    url(tex/paper.webp) 0 0 / 420px,
+    url(tex/mottle.webp) 0 0 / 1100px,
+    var(--k-c);
+  color: var(--k-ink);
+}
+
+/* ---------------------------------------------------------------- pieces ---------- */
+/* A piece is three layers: ::before is what it throws (shadow, torn white core),
+   ::after is its face (colour + texture, cut to shape), content sits on top.
+   Until kit.js cuts it, a piece is a plain rectangle with a soft shadow. */
+.k-paper, .k-felt, .k-tissue, .k-slip {
+  position: relative;
+  isolation: isolate;
+  --k-p: var(--k-pad);
+}
+:is(.k-paper, .k-felt, .k-tissue, .k-slip)::before,
+:is(.k-paper, .k-felt, .k-tissue, .k-slip)::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+:is(.k-paper, .k-felt, .k-tissue, .k-slip)::before {
+  inset: 0;
+  box-shadow: 1px 2px 2px rgb(40 24 10 / .22), 3px 8px 14px rgb(40 24 10 / .16);
+}
+:is(.k-paper, .k-felt, .k-tissue, .k-slip)::after {
+  inset: calc(var(--k-p) * -1);
+  clip-path: var(--k-clip, inset(var(--k-p)));
+}
+.k-cut::before {
+  inset: calc(var(--k-p) * -1);
+  box-shadow: none;
+  background: var(--k-under, none) 0 0 / 100% 100% no-repeat;
+}
+
+/* construction paper */
+.k-paper { --k-c: var(--k-paper); }
+.k-paper::after {
+  background:
+    var(--k-over, linear-gradient(transparent, transparent)) 0 0 / 100% 100% no-repeat,
+    linear-gradient(var(--k-fade, 128deg), rgb(255 253 244 / .17), transparent 58%),
+    url(tex/paper.webp) var(--k-tx, 0) var(--k-ty, 0) / 420px,
+    url(tex/mottle.webp) var(--k-ty, 0) var(--k-tx, 0) / 900px,
+    var(--k-c);
+}
+.k-paper.k-black::after, .k-paper.k-green::after { background-blend-mode: normal, normal, soft-light, normal, normal; }
+
+/* typed slip: white typing paper, cut, a line or two of type */
+.k-slip {
+  --k-c: var(--k-cream);
+  --k-p: 14px;
+  display: inline-block;
+  padding: .32em .7em .26em;
+  font-family: var(--k-type);
+  font-size: .82rem;
+  line-height: 1.3;
+  letter-spacing: .02em;
+  color: var(--k-ink);
+}
+.k-slip.k-cream, .k-slip.k-grey, .k-slip.k-yellow, .k-slip.k-pink, .k-slip.k-blue { --k-c: var(--k-paper); }
+.k-slip::before { box-shadow: .5px 1px 1.5px rgb(40 24 10 / .3); }
+.k-slip::after {
+  background:
+    var(--k-over, linear-gradient(transparent, transparent)) 0 0 / 100% 100% no-repeat,
+    url(tex/slip.webp) var(--k-tx, 0) var(--k-ty, 0) / 300px,
+    var(--k-c);
+}
+.k-slip.k-cut::before { box-shadow: none; }
+
+/* felt: soft edge, visible fibres, thickness. Buttons, tabs, anything pressed. */
+.k-felt {
+  --k-c: var(--k-felt);
+  --k-p: 18px;
+  color: var(--k-ink);
+}
+.k-felt::after {
+  clip-path: var(--k-clip, inset(var(--k-p) round 6px));
+  background: url(tex/felt.webp) var(--k-tx, 0) var(--k-ty, 0) / 320px, var(--k-c);
+}
+.k-felt.k-cut::after {
+  clip-path: none;
+  background: var(--k-sprite) 0 0 / 100% 100% no-repeat;
+}
+.k-felt.k-black, .k-felt.k-green, .k-felt.k-magenta, .k-felt.k-red { color: var(--k-cream); }
+:is(a, button, label, summary, [role="button"]).k-felt {
+  cursor: pointer;
+  font: inherit;
+  border: 0;
+  background: none;
+  text-decoration: none;
+}
+button.k-felt, a.k-felt { display: inline-block; padding: .55em 1.1em .5em; }
+:is(a, button, label, summary, [role="button"]).k-felt::after { transition: translate .12s ease-out; }
+:is(a, button, label, summary, [role="button"]).k-felt::before { transition: opacity .12s ease-out, translate .12s ease-out; }
+:is(a, button, label, summary, [role="button"]).k-felt:hover::after { translate: 0 -1px; }
+:is(a, button, label, summary, [role="button"]).k-felt:hover::before { translate: 1px 2px; }
+:is(a, button, label, summary, [role="button"]).k-felt:active::after,
+.k-felt[aria-pressed="true"]::after { translate: 0 1.5px; }
+:is(a, button, label, summary, [role="button"]).k-felt:active::before,
+.k-felt[aria-pressed="true"]::before { opacity: .45; translate: 0 -1px; }
+:is(a, button, label, summary, [role="button"]).k-felt:active > *,
+.k-felt[aria-pressed="true"] > * { translate: 0 1.5px; }
+
+/* a dashed focus ring reads as tacking stitches */
+:is(.k-felt, .k-paper, .k-slip, k-hole):focus-visible,
+a:focus-visible > k-hole {
+  outline: 2px dashed var(--k-thread);
+  outline-offset: 5px;
+}
+
+/* tissue: translucent; where two pieces cross, the colours multiply */
+.k-tissue {
+  --k-c: var(--k-tissue);
+  mix-blend-mode: multiply;
+}
+.k-tissue::before { box-shadow: none; }
+.k-tissue::after {
+  background:
+    url(tex/crinkle.webp) var(--k-ty, 0) var(--k-tx, 0) / 720px,
+    url(tex/tissue.webp) var(--k-tx, 0) var(--k-ty, 0) / 480px,
+    color-mix(in srgb, var(--k-c) 74%, transparent);
+}
+
+/* torn edges show the paper's white core. Say which sides: data-torn="top bottom" */
+
+/* tilt: data-tilt picks a small seeded angle, or set --k-r yourself */
+[data-tilt], .k-tilt { rotate: var(--k-r, -1deg); }
+
+/* ---------------------------------------------------------------- tape ------------ */
+/* Real Scotch and masking tape. data-tape="top", "tl br", "left right"... on any
+   element adds strips across its edges; or place .k-tape yourself with --k-x --k-y --k-r --k-w. */
+[data-tape] { position: relative; }
+.k-tape {
+  position: absolute;
+  left: var(--k-x, 50%);
+  top: var(--k-y, 0);
+  width: var(--k-w, 96px);
+  height: var(--k-tape-h);
+  translate: -50% -50%;
+  rotate: var(--k-r, -4deg);
+  z-index: 3;
+  pointer-events: none;
+  clip-path: var(--k-teeth, polygon(2px 0, calc(100% - 3px) 0, 100% 3px, calc(100% - 2px) 6px, 100% 9px, calc(100% - 3px) 12px, 100% 15px, calc(100% - 2px) 18px, 100% 21px, calc(100% - 2.5px) 100%, 2px 100%, 0 calc(100% - 3px), 2.5px calc(100% - 6px), 0 calc(100% - 9px), 2px 12px, 0 9px, 2.5px 6px, 0 3px));
+  background:
+    linear-gradient(to bottom, rgb(255 255 250 / .5) 0 1.2px, transparent 1.2px calc(100% - 1.2px), rgb(120 100 60 / .16) calc(100% - 1.2px)),
+    url(tex/frost.webp) var(--k-tx, 0) 0 / 160px,
+    rgb(241 230 189 / .30);
+}
+/* the corner that won't stay down: whiter where it lifts off, with its shadow beneath */
+.k-tape::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0;
+  width: 18px; height: 16px;
+  background: linear-gradient(225deg, rgb(255 253 244 / .75) 0 38%, rgb(60 40 20 / .16) 44%, transparent 64%);
+}
+.k-tape[data-lift="bl"]::after { right: auto; top: auto; left: 0; bottom: 0; rotate: 180deg; }
+.k-tape[data-lift="none"]::after { display: none; }
+.k-tape.k-masking {
+  --k-tape-h: 30px;
+  background:
+    linear-gradient(to bottom, rgb(255 250 235 / .35) 0 1px, transparent 1px),
+    url(tex/crepe.webp) var(--k-tx, 0) 0 / 160px,
+    rgb(233 217 166 / .86);
+}
+
+/* ---------------------------------------------------------------- stitches -------- */
+/* .k-stitch on a piece runs a stitched edge just inside it (kit.js draws it into the face).
+   data-thread="cream|ink|yellow|blue|magenta" picks the floss. */
+[data-thread="cream"]   { --k-thread: #f3ead8; }
+[data-thread="ink"]     { --k-thread: #2c1a1f; }
+[data-thread="yellow"]  { --k-thread: #e9b22c; }
+[data-thread="blue"]    { --k-thread: #2aa3b0; }
+[data-thread="magenta"] { --k-thread: #d8367f; }
+[data-thread="red"]     { --k-thread: #dc512c; }
+
+/* .k-seam: a stitched join between two things (where a rule would have gone) */
+.k-seam {
+  display: block;
+  height: 12px;
+  margin: 2rem auto;
+  width: min(100%, var(--k-seam-w, 100%));
+  border: 0;
+  background: var(--k-seam-img, none) 0 50% / 22px 12px repeat-x;
+}
+
+/* ---------------------------------------------------------------- the hand -------- */
+.k-pen {
+  font-family: var(--k-hand);
+  font-weight: 400;
+  font-size: calc(var(--k-size, 1em) * var(--k-hand-scale));   /* size a pen with --k-size, not font-size */
+  line-height: var(--k-hand-lh);
+  -webkit-text-stroke: var(--k-hand-weight) currentColor;
+  color: var(--k-pen-ink);
+  letter-spacing: 0;
+  translate: 0 var(--k-hand-rise);
+}
+:where(h1, h2, h3, h4, p, span, a, li, figcaption, b, i, em, strong).k-pen { display: inline-block; }
+:where(h1, h2, h3, h4, p, li, figcaption, div).k-pen { display: block; }
+
+/* the pen crosses out, and writes above. The stroke is the element's own background, so a
+   strike that wraps gets one stroke per line fragment (box-decoration-break: clone), each
+   run a little past the words at both ends. It sits behind the letters, in the same ink. */
+.k-strike {
+  text-decoration: none;
+  padding-inline: .14em;
+  margin-inline: -.14em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: var(--k-strike-img, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M1 6.4C14 4.5 25 5.9 38 4.6S63 3.1 76 4.3 92 3.7 99 2.4' fill='none' stroke='%231f1a1d' stroke-width='3.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M2.5 7.6C20 6.4 41 7.1 60 5.8S88 5 97.5 4.5' fill='none' stroke='%231f1a1d' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke' opacity='.85'/%3E%3C/svg%3E")) 0 var(--k-strike-y, 58%) / 100% var(--k-strike-h, .5em) no-repeat;
+}
+.k-ins {
+  display: inline-block;
+  font-family: var(--k-hand);
+  font-size: calc(var(--k-size, .8em) * var(--k-hand-scale));
+  -webkit-text-stroke: var(--k-hand-weight) currentColor;
+  color: var(--k-pen-ink);
+  line-height: 1;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  rotate: -4deg;
+  translate: 0 -.38em;
+}
+
+/* ---------------------------------------------------------------- type helpers ---- */
+.k-type { font-family: var(--k-type); letter-spacing: .02em; }
+.k-prose { font-family: var(--k-prose); color: var(--k-ink); line-height: 1.6; }
+.k-code, .k-prose code { font-family: var(--k-code); font-size: .88em; }
+
+/* ---------------------------------------------------------------- the wordmark ---- */
+k-wordmark {
+  display: inline-block;
+  width: var(--k-wordmark-w, 6em);
+  line-height: 0;
+  color: var(--k-name);
+}
+k-wordmark svg { display: block; width: 100%; height: auto; overflow: visible; }
+k-wordmark .k-wm-my {
+  font-family: var(--k-hand);
+  font-size: calc(66px * var(--k-hand-scale));
+  fill: var(--k-pen-ink);
+  stroke: var(--k-pen-ink);
+  stroke-width: calc(var(--k-hand-sw) * 66px);
+  paint-order: stroke;
+}
+
+/* ---------------------------------------------------------------- holes ----------- */
+/* A hole cut through the page to what's underneath: a wallpaper, or an album cover. */
+k-hole {
+  display: block;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  --k-hole-m: 12px;
+}
+k-hole[shape="rect"] { --k-hole-m: 8px; }
+k-hole .k-hole-win {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: var(--k-clip, inset(var(--k-hole-m) round 42%));
+  background: var(--k-hole-dark, #2a2320);
+}
+k-hole[shape="rect"] .k-hole-win { clip-path: var(--k-clip, inset(var(--k-hole-m))); }
+k-hole img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--k-focus, 50% 50%);
+  opacity: 0;
+  transition: opacity .9s ease, scale .7s cubic-bezier(.2, .7, .2, 1);
+}
+k-hole img.k-on { opacity: 1; }
+k-hole::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--k-rim, none) 0 0 / 100% 100% no-repeat;
+}
+:is(a, button):hover > k-hole img, :is(a, button):focus-visible > k-hole img, k-hole[href]:hover img { scale: 1.045; }
+
+/* the piece that came out: a card with two faces, turned over and set down beside the hole.
+   The front is the sheet it was cut from (--k-piece-front, else the sheet kit.js finds);
+   the back is the paper's other side (--k-piece-c). piece-front="…" / piece-back="…" write
+   on them in the pen. It lands at half size, face down. */
+k-hole .k-hole-piece {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  container-type: size;
+  translate: var(--k-piece-x, 58%) var(--k-piece-y, 30%);
+  rotate: var(--k-piece-r, 16deg);
+  scale: var(--k-piece-s, .5);
+}
+k-hole .k-piece-shadow { position: absolute; inset: calc(var(--k-pad) * -1); background: var(--k-piece-shadow, none) 0 0 / 100% 100% no-repeat; }
+k-hole .k-piece-card { position: absolute; inset: 0; transform-style: preserve-3d; transform: perspective(1800px) rotateY(180deg); }
+k-hole .k-piece-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 400;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+k-hole .k-piece-front {
+  clip-path: var(--k-clip, inset(var(--k-hole-m) round 42%));
+  background:
+    var(--k-cutline, none) 0 0 / 100% 100% no-repeat,
+    url(tex/paper.webp) 0 0 / 420px,
+    url(tex/mottle.webp) 0 0 / 900px,
+    var(--k-piece-front, var(--k-piece-sheet, var(--k-manila)));
+}
+k-hole .k-piece-back {
+  transform: rotateY(180deg);
+  clip-path: var(--k-clip-back, var(--k-clip, inset(var(--k-hole-m) round 42%)));
+  background:
+    linear-gradient(135deg, rgb(255 253 244 / .14), transparent 60%),
+    url(tex/paper.webp) 30px 50px / 420px,
+    var(--k-piece-c, var(--k-manila-back));
+}
+k-hole .k-piece-face > .k-pen {
+  position: relative;   /* hold its place against a page's own .k-pen rules */
+  inset: auto;
+  margin: 0;
+  --k-size: var(--k-piece-size, 12cqh);
+  max-width: 64%;
+  line-height: 1.05;
+  rotate: var(--k-piece-tr, -5deg);
+}
+
+/* reveal: the piece starts in its hole, lifts, turns over in the air and lands. A CSS
+   animation, so it can be seeked (hole.seekReveal(t), or --k-reveal-delay: -1s with
+   --k-reveal-play: paused) and recorded frame by frame. */
+@media (prefers-reduced-motion: no-preference) {
+  k-hole[reveal]:not(.k-revealed) .k-hole-piece { translate: 0 0; rotate: 0deg; scale: 1; }
+  k-hole[reveal]:not(.k-revealed) .k-piece-card { transform: perspective(1800px) rotateY(0deg); }
+  k-hole[reveal]:not(.k-revealed) .k-piece-shadow { opacity: 0; }
+  k-hole[reveal].k-revealed :is(.k-hole-piece, .k-piece-card, .k-piece-shadow) {
+    animation-duration: var(--k-reveal-dur, 1.5s);
+    animation-delay: var(--k-reveal-delay, .35s);
+    animation-fill-mode: both;
+    animation-play-state: var(--k-reveal-play, running);
+  }
+  k-hole[reveal].k-revealed .k-hole-piece { animation-name: k-reveal-lift; animation-timing-function: cubic-bezier(.45, .05, .25, 1); }
+  k-hole[reveal].k-revealed .k-piece-card { animation-name: k-reveal-turn; animation-timing-function: ease-in-out; }
+  k-hole[reveal].k-revealed .k-piece-shadow { animation-name: k-reveal-shade; animation-timing-function: ease-in; }
+}
+@keyframes k-reveal-lift {
+  0%   { translate: 0 0; rotate: 0deg; scale: 1; }
+  16%  { translate: 0 -2%; rotate: calc(var(--k-piece-r, 16deg) * .08); scale: 1.05; }
+  /* 100%: where it lies, from --k-piece-x/-y/-r */
+}
+@keyframes k-reveal-turn {
+  0%, 18% { transform: perspective(1800px) rotateY(0deg); }
+  82%, 100% { transform: perspective(1800px) rotateY(180deg); }
+}
+@keyframes k-reveal-shade {
+  0%, 12% { opacity: 0; translate: 0 0; }
+  50% { opacity: .2; translate: 3% 7%; }
+  100% { opacity: 1; translate: 0 0; }
+}
+
+/* caption: the hole names what it shows on a typed slip, set across its lower edge */
+k-hole .k-hole-cap {
+  position: absolute;
+  z-index: 2;
+  left: var(--k-cap-x, 6%);
+  bottom: var(--k-cap-y, -.6em);
+  width: max-content;
+  max-width: var(--k-cap-w, min(88%, 36em));
+  rotate: var(--k-cap-r, -1.5deg);
+  text-transform: uppercase;
+}
+k-hole .k-hole-cap[hidden] { display: none; }
+
+/* ---------------------------------------------------------------- the patch ------- */
+/* The mark: a stitched felt patch with a hole in it. Size it with width. */
+k-patch {
+  display: inline-block;
+  width: var(--k-patch-w, 160px);
+  aspect-ratio: 1;
+  position: relative;
+  background: var(--k-sprite, none) 50% 50% / 100% 100% no-repeat;
+}
+
+/* ---------------------------------------------------------------- motion ---------- */
+/* .k-lay: a piece is laid down the first time it comes into view. Opt in per piece. */
+.k-js .k-lay:not(.k-in) { opacity: 0; translate: 0 -10px; scale: 1.02; }
+.k-lay { transition: opacity .45s ease-out var(--k-delay, 0s), translate .6s cubic-bezier(.2, .8, .2, 1) var(--k-delay, 0s), scale .6s cubic-bezier(.2, .8, .2, 1) var(--k-delay, 0s); }
+.k-lay.k-done { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-js .k-lay:not(.k-in) { opacity: 1; translate: none; scale: none; }
+  .k-lay, k-hole img,
+  :is(a, button, label, summary, [role="button"]).k-felt::before,
+  :is(a, button, label, summary, [role="button"]).k-felt::after { transition: none !important; }
+  :is(a, button):hover > k-hole img, k-hole[href]:hover img { scale: none; }
+}
+
+/* ---------------------------------------------------------------- phones ---------- */
+@media (max-width: 640px) {
+  :root { --k-pad: 16px; --k-tape-h: 22px; }
+  .k-tape { width: calc(var(--k-w, 96px) * .8); }
+  .k-tape.k-masking { --k-tape-h: 25px; }
+  .k-slip { font-size: .76rem; }
+  .k-seam { margin: 1.4rem auto; }
+}

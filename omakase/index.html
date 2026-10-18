@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my omakase</title>
+<meta name="description" content="The customizations one machine runs on top of Omarchy, told as a diff against stock, one handmade object per story.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap">
+<link rel="stylesheet" href="./identity/kit/kit.css">
+<link rel="stylesheet" href="shell.css">
+<script type="module" src="./identity/kit/kit.js"></script>
+<script type="module" src="./identity/icon/laying.js"></script>
+<script type="module" src="shell.js"></script>
+</head>
+<body class="k-ground">
+
+<!-- the opening: the icon laid in strips -->
+<header class="r6-opening" id="top">
+  <h1 class="r6-sr">my omakase</h1>
+  <div class="r6-spot">
+    <p id="said" class="k-pen">one of one.</p>
+  </div>
+</header>
+
+<!-- the laid icon: in the opening, then shrinks to the corner and stays -->
+<a class="r6-lay" href="#top" aria-label="my omakase, back to the top" tabindex="-1">
+  <div id="icon" role="img" aria-label="The Omarchy icon, built from thirteen strips of green construction paper"></div>
+</a>
+
+<!-- sections and dividers are put here by shell.js -->
+<main id="r6-main"></main>
+
+<footer class="r6-foot" id="r6-foot">
+  <div class="scrap k-paper k-manila" data-torn="top right" data-seed="foot-scrap" data-tilt="-1.2">
+    <div class="r6-foot-mark" aria-hidden="true"></div>
+    <div class="r6-foot-links">
+      <a class="k-slip" href="https://github.com/jmckible/drivetrain" data-tilt="-1">DOTFILES: DRIVETRAIN</a>
+      <a class="k-slip k-yellow" href="https://omarchy.org" data-tilt="1.2">OMARCHY.ORG</a>
+      <a class="k-slip" href="https://jordan.mckible.com" data-tilt="-0.6">CREATED BY JORDAN MCKIBLE</a>
+    </div>
+  </div>
+</footer>
+
+</body></html>

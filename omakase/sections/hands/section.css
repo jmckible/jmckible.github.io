@@ -1,0 +1,239 @@
+/* The hands: a paper desk above a few felt keys, then the reading sheet.
+   Every selector starts at #s-hands. url()s resolve against this file. */
+
+#s-hands { padding: 96px 16px 128px; --u: 82px; }
+#s-hands .hands { max-width: 1180px; margin: 0 auto; }
+
+/* ------------------------------------------------------------ the head */
+#s-hands .hands-head { text-align: center; margin: 0 auto 26px; color: var(--ink); }
+#s-hands h2 { --k-size: 60px; font-weight: 400; line-height: 1.1; margin: 0; }
+#s-hands .hands-mac { --k-size: 28px; margin: 2px 0 0 18em; rotate: -3deg; display: inline-block; }
+#s-hands .hands-lede { font-family: var(--r-book); font-size: 21px; line-height: 1.5; margin: 18px auto 0; max-width: 30em; }
+
+/* ------------------------------------------------------------ the stage */
+#s-hands .hands-stage { padding-top: 66px; }
+/* the desk: the browser on the left, workspace 1 on the right */
+#s-hands .hands-desk { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+/* the board: the left hand's keys with their slips beside them, then H J K L */
+#s-hands .hands-board {
+  display: grid; grid-template-columns: calc(var(--u) * 2.6) minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 34px; align-items: start; margin-top: 40px;
+}
+#s-hands .hands-says { padding-top: 4px; }
+#s-hands .hands-right { padding-top: calc(var(--u) + 10px); }
+
+#s-hands .hands-win { position: relative; cursor: pointer; outline: none; }
+#s-hands .hands-win:focus-visible .hands-page,
+#s-hands .hands-win:focus-visible .hands-sheet { outline: 2px dashed var(--k-thread); outline-offset: 8px; }
+
+/* "focused": a pen note and arrow over whichever window has focus */
+#s-hands .hands-focus {
+  --k-size: 26px;
+  position: absolute; top: -64px; margin: 0; white-space: nowrap; z-index: 3;
+  color: var(--ink); opacity: 0; translate: 0 6px;
+  transition: opacity .25s, translate .25s; pointer-events: none;
+}
+#s-hands .hands-focus svg { position: absolute; width: 60px; height: 42px; overflow: visible;
+  fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+#s-hands .hands-browser .hands-focus { right: 16%; padding-right: 68px; }
+#s-hands .hands-browser .hands-focus svg { right: 0; top: 18px; }
+#s-hands .hands-ws .hands-focus { left: 14%; padding-left: 68px; }
+#s-hands .hands-ws .hands-focus svg { left: 0; top: 18px; }
+#s-hands .hands-stage[data-focus="browser"] .hands-browser .hands-focus,
+#s-hands .hands-stage[data-focus="ws"] .hands-ws .hands-focus { opacity: 1; translate: 0 0; }
+#s-hands .hands-win > :not(.hands-focus) { transition: opacity .3s; }
+#s-hands .hands-stage[data-focus="browser"] .hands-ws > :not(.hands-focus),
+#s-hands .hands-stage[data-focus="ws"] .hands-browser > :not(.hands-focus) { opacity: .8; }
+
+/* ------------------------------------------------------------ the browser */
+#s-hands .hands-browser { margin-top: 12px; }
+#s-hands .hands-tabs { position: relative; display: flex; gap: 4px; height: 40px; padding: 0 14px; z-index: 2; }
+#s-hands .hands-tab {
+  flex: 0 1 118px; min-width: 0; height: 46px; box-sizing: border-box;
+  padding: 9px 12px 0; margin-bottom: -6px;
+  font: 12.5px/1.2 var(--k-code); color: var(--k-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; z-index: 0;
+}
+#s-hands .hands-tab.on { z-index: 1; }
+#s-hands .hands-tab .x { opacity: .5; margin-left: 6px; }
+#s-hands .hands-tab.off { pointer-events: none; z-index: 4; }
+#s-hands .hands-page { position: relative; z-index: 1; min-height: 268px; padding: 24px 28px 22px; color: var(--k-ink); box-sizing: border-box; }
+#s-hands .hands-url { font-size: .76rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; box-sizing: border-box; }
+#s-hands .hands-title { --k-size: 34px; margin: 20px 0 14px; line-height: 1.15; min-height: 1.15em; }
+/* the page's text, scribbled in pen */
+#s-hands .hands-lines, #s-hands .hands-scrawl { margin: 0; display: grid; gap: 12px; }
+#s-hands .hands-lines i, #s-hands .hands-scrawl i, #s-hands .hands-inbox i {
+  display: block; height: 10px; opacity: .36;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 10'%3E%3Cpath d='M1 6c4-3 6 2 9 0s4-4 7-1 5 2 8-1 5 3 8 1 4-3 7-1 5 2 8 0 4-2 6 0 4 1 5 0' fill='none' stroke='%231f1a1d' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 0 50% / 60px 10px repeat-x;
+}
+#s-hands .hands-lines i:nth-child(1) { width: 92%; }
+#s-hands .hands-lines i:nth-child(2) { width: 78%; }
+#s-hands .hands-lines i:nth-child(3) { width: 86%; }
+#s-hands .hands-lines i:nth-child(4) { width: 44%; }
+#s-hands .hands-left { position: absolute; right: 22px; bottom: 16px; font-size: 12px; color: var(--k-muted); }
+#s-hands .hands-page.blank .hands-lines, #s-hands .hands-page.blank .hands-url { visibility: hidden; }
+
+/* ------------------------------------------------------------ workspace 1 */
+#s-hands .hands-sheet { padding: 20px 24px 16px; color: var(--k-ink); }
+#s-hands .hands-sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+#s-hands .hands-sheet-head .k-slip { font-size: .74rem; }
+#s-hands .hands-rack {
+  --rise: 64px; --peek: 30px; --pk: 58px;
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; row-gap: 6px;
+  margin-top: 18px;
+}
+/* a slot: room above for the card to rise into, the pocket at its foot */
+#s-hands .hands-slot { position: relative; height: calc(var(--rise) + var(--pk) + 14px);
+  clip-path: inset(-300px -300px 0 -300px); }
+#s-hands .hands-card {
+  --y: 0;
+  position: absolute; left: 12%; right: 12%; bottom: 6px;
+  height: calc(var(--pk) + var(--peek) - 4px + var(--rise) - 10px);
+  box-sizing: border-box; padding: 9px 14px; z-index: 0;
+  translate: 0 calc((1 - var(--y)) * (var(--rise) - 10px));
+}
+#s-hands .hands-slot[data-state="out"] .hands-card { --y: 1; }
+#s-hands .hands-app { --k-size: 21px; margin: 0 0 10px; line-height: 1.1; white-space: nowrap; }
+#s-hands .hands-scrawl { gap: 10px; }
+#s-hands .hands-scrawl i:nth-child(2) { width: 80%; }
+#s-hands .hands-scrawl i:nth-child(3) { width: 55%; }
+#s-hands .hands-inbox { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+#s-hands .hands-inbox li { display: flex; align-items: center; gap: 8px; }
+#s-hands .hands-inbox i { flex: 1; opacity: .45; }
+#s-hands .hands-inbox em { font-style: normal; font-size: 11px; white-space: nowrap; }
+#s-hands .hands-slot.landed .hands-inbox em::after { content: ' ✓'; }
+#s-hands .hands-pk {
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--pk); z-index: 1;
+  display: grid; align-content: center; justify-items: center; gap: 3px; box-sizing: border-box;
+  font-family: var(--k-type); color: var(--k-ink); text-align: center;
+}
+#s-hands .hands-pk b { font-weight: 400; font-size: 13px; letter-spacing: .06em; }
+#s-hands .hands-pk span { font-size: 11px; opacity: .72; }
+#s-hands .hands-slot.current .hands-pk b { text-decoration: none; }
+#s-hands .hands-parked { --k-size: 20px; margin: 10px 0 0; min-height: 1.35em; text-wrap: balance; text-align: center; rotate: -1.5deg; }
+
+/* ------------------------------------------------------------ the keys */
+#s-hands .hands-keys { position: relative; }
+#s-hands .hands-keys-l { height: calc(var(--u) * 3 + 20px); }
+/* true to the board: W on the top row, S a quarter key right on the home row,
+   super at the foot, a key and a quarter wide */
+#s-hands .hands-key {
+  box-sizing: border-box; width: var(--u); height: var(--u); padding: 0;
+  font: 600 calc(var(--u) * .42)/1 var(--k-prose); color: var(--k-ink);
+  display: grid; place-items: start; padding: calc(var(--u) * .13) calc(var(--u) * .17);
+}
+#s-hands .hands-keys-l .hands-key { position: absolute; }
+#s-hands .hands-w { left: calc(var(--u) * 1.25); top: 0; rotate: -2deg; }
+#s-hands .hands-s { left: calc(var(--u) * 1.55); top: calc(var(--u) + 10px); rotate: 1.5deg; }
+#s-hands .hands-super {
+  left: 0; top: calc(var(--u) * 2 + 20px); width: calc(var(--u) * 1.25); height: calc(var(--u) * .92);
+  font-size: 15px; font-weight: 600; letter-spacing: .06em; color: var(--k-cream);
+  place-items: end start; rotate: -1deg;
+}
+#s-hands .hands-super[aria-pressed="true"] > * { translate: none; }
+#s-hands .hands-strip { display: flex; align-items: center; rotate: -.8deg; }
+#s-hands .hands-strip .hands-key { margin: 0 -3px; padding-left: calc(var(--u) * .3); }
+/* where the strip was cut and sewn back: three cross-stitches over each join */
+#s-hands .hands-join {
+  position: relative; z-index: 2; width: 0; height: calc(var(--u) * .7);
+  pointer-events: none;
+}
+#s-hands .hands-join::before {
+  content: ''; position: absolute; left: -6px; width: 12px; top: 50%; height: 54px; translate: 0 -50%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 18'%3E%3Cpath d='M2 5l8 6M10 5L2 11' fill='none' stroke='%23f3eee1' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 12px 18px repeat-y;
+}
+
+/* ------------------------------------------------------------ the slips */
+#s-hands .hands-say { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+#s-hands .hands-say .k-slip { font-size: .86rem; line-height: 1.4; max-width: 100%; }
+#s-hands .hands-say b { font-weight: 400; margin-right: .3em; }
+#s-hands .hands-say-s { margin-top: 26px; }
+#s-hands .hands-say-h { margin-top: 26px; }
+/* stock: a grey slip under a sheet of tissue */
+#s-hands .hands-stock { position: relative; display: inline-block; margin: 4px 0 0 18px; }
+#s-hands .hands-stock .k-slip { color: color-mix(in srgb, var(--k-ink) 88%, transparent); }
+#s-hands .hands-stock em { font-style: normal; font-size: .82em; letter-spacing: .08em; text-transform: uppercase; margin-right: .6em; opacity: .7; }
+#s-hands .hands-stock .k-tissue { position: absolute; inset: -6px -10px -7px -8px; z-index: 2; pointer-events: none; }
+#s-hands .hands-hint { margin: 30px 0 0; font-size: 13px; color: color-mix(in srgb, var(--ink) 74%, transparent); }
+
+/* ------------------------------------------------------------ the reading sheet */
+#s-hands .hands-read {
+  max-width: 37em; margin: 110px auto 0; padding: 50px clamp(22px, 5vw, 60px) 40px;
+  color: var(--k-ink);
+  --k-cream: color-mix(in srgb, #f3eee1 90%, var(--light));
+}
+#s-hands .hands-part h3 { display: flex; align-items: flex-start; gap: 16px; margin: 0 0 18px; font-weight: 400; }
+#s-hands .hands-part h3 .k-pen { --k-size: 30px; line-height: 1.3; padding-top: 4px; }
+#s-hands kbd { display: inline-block; flex: none; font: 600 18px/1 var(--k-prose); padding: 12px 14px 11px; min-width: 1.2em; text-align: center; }
+#s-hands .hands-part p { font-family: var(--r-book); font-size: 20px; line-height: 1.6; margin: 0 0 .9em; }
+#s-hands .hands-part code { font-size: .8em; }
+#s-hands .hands-how { margin: 24px 0 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px 18px; align-items: baseline; }
+#s-hands .hands-how dt { margin: 0; }
+#s-hands .hands-how dt .k-slip { font-size: .76rem; white-space: nowrap; }
+#s-hands .hands-how dd { margin: 0; font-size: 17px; line-height: 1.55; }
+#s-hands .hands-part p.hands-see { margin: 22px 0 0; font-family: var(--k-type); }
+#s-hands .hands-see .k-slip { font-size: .76rem; text-decoration: none; margin-right: 8px; }
+#s-hands .hands-see .k-slip:hover { text-decoration: underline; }
+#s-hands .hands-read .k-seam { margin: 34px 0 32px; }
+
+/* ------------------------------------------------------------ narrower */
+@media (max-width: 1100px) {
+  #s-hands { --u: 74px; }
+  #s-hands .hands-board { grid-template-columns: calc(var(--u) * 2.6) minmax(0, 1fr); row-gap: 40px; }
+  #s-hands .hands-right { grid-column: 1 / -1; padding-top: 0; }
+}
+@media (max-width: 760px) {
+  #s-hands { padding: 72px 16px 96px; --u: 54px; }
+  #s-hands h2 { --k-size: 40px; }
+  #s-hands .hands-mac { --k-size: 23px; margin-left: 5em; white-space: nowrap; }
+  #s-hands .hands-lede { font-size: 18px; }
+  /* one column: the browser, the keys under the thumb, then the pockets, then the slips */
+  #s-hands .hands-stage {
+    display: grid; grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "b b" "kl kr" "ws ws" "sw sw" "ss ss" "sh sh" "hint hint";
+    column-gap: 14px; padding-top: 58px;
+  }
+  #s-hands :is(.hands-desk, .hands-board, .hands-says, .hands-right) { display: contents; }
+  #s-hands .hands-browser { grid-area: b; }
+  #s-hands .hands-ws { grid-area: ws; }
+  #s-hands .hands-keys-l { grid-area: kl; }
+  #s-hands .hands-keys-r { grid-area: kr; align-self: start; padding-top: calc(var(--u) + 10px); }
+  #s-hands .hands-say-w { grid-area: sw; }
+  #s-hands .hands-say-s { grid-area: ss; }
+  #s-hands .hands-say-h { grid-area: sh; }
+  #s-hands .hands-hint { grid-area: hint; }
+  #s-hands .hands-keys { margin-top: 26px; }
+  #s-hands .hands-say-w { margin-top: 20px; }
+  #s-hands .hands-keys-l { width: calc(var(--u) * 2.55); }
+  #s-hands .hands-keys-r { justify-self: end; }
+  #s-hands .hands-strip .hands-key { margin: 0 -2px; }
+  #s-hands .hands-super { font-size: 11px; }
+  #s-hands .hands-ws { margin-top: 70px; }
+  #s-hands .hands-focus { --k-size: 22px; top: -56px; }
+  #s-hands .hands-page { min-height: 210px; padding: 20px 20px 18px; }
+  #s-hands .hands-title { --k-size: 27px; margin: 14px 0 10px; }
+  #s-hands .hands-tab { font-size: 12px; padding: 9px 9px 0; }
+  #s-hands .hands-tabs { padding: 0 8px; }
+  #s-hands .hands-sheet { padding: 16px 14px 12px; }
+  #s-hands .hands-rack { --rise: 56px; --peek: 26px; --pk: 52px; column-gap: 12px; }
+  #s-hands .hands-card { left: 8%; right: 8%; padding: 7px 10px; }
+  #s-hands .hands-app { --k-size: 15px; margin-bottom: 7px; }
+  #s-hands .hands-inbox em { font-size: 10px; }
+  #s-hands .hands-pk b { font-size: 11px; }
+  #s-hands .hands-pk span { font-size: 10px; }
+  #s-hands .hands-parked { --k-size: 17px; }
+  #s-hands .hands-say .k-slip { font-size: .76rem; }
+  #s-hands .hands-say-h { margin-top: 26px; }
+  #s-hands .hands-hint { margin-top: 24px; }
+  #s-hands .hands-read { margin-top: 84px; padding: 42px 22px 32px; }
+  #s-hands .hands-part h3 { gap: 12px; }
+  #s-hands .hands-part h3 .k-pen { --k-size: 25px; }
+  #s-hands kbd { font-size: 16px; padding: 10px 11px 9px; }
+  #s-hands .hands-part p { font-size: 18px; }
+  #s-hands .hands-how { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  #s-hands .hands-how dd { margin-bottom: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #s-hands .hands-focus, #s-hands .hands-win > * { transition: none; }
+}

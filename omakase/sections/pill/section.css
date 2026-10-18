@@ -1,0 +1,164 @@
+/* The pill bar. Morning. A monitor cut through the morning paper, a morning wallpaper
+   showing through it, with the stock strip across its top; scissors trim it to a capsule and the offcuts lie below. Then the reading: a
+   measurement slip, and a swatch card of every wallpaper the pill has to sit on. */
+
+#s-pill { padding: 96px 16px 150px; }
+#s-pill .pl-wrap { max-width: 1180px; margin: 0 auto; }
+
+/* ------------------------------------------------------------ the head */
+#s-pill .pl-tags { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+#s-pill .pl-tags a { text-decoration: none; }
+#s-pill .pl-tags a:hover { text-decoration: underline; }
+#s-pill h2 { --k-size: 60px; font-weight: 400; margin: 20px 0 0; line-height: 1.1; color: var(--ink); }
+
+/* ------------------------------------------------------------ the bench */
+#s-pill .pl-bench { position: relative; margin-top: 92px; padding-bottom: 150px; }
+#s-pill .pl-screen { position: relative; }
+#s-pill .pl-screen k-hole { display: block; width: 100%; aspect-ratio: 16 / 7; --k-hole-m: 0px; --k-cap-x: auto; }
+#s-pill .pl-screen k-hole .k-hole-cap { left: auto; right: 3%; rotate: 1.2deg; }
+
+#s-pill .pl-adds { position: absolute; z-index: 2; left: 3.2%; top: calc(var(--pl-st) + var(--pl-h) + 34px);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: min(62%, 30em); }
+#s-pill .pl-adds .k-slip { font-size: 15px; line-height: 1.45; }
+#s-pill .pl-adds b, #s-pill .pl-pile b { font-weight: 400; margin-right: .35em; }
+
+/* the strip, and the pieces section.js cuts it into */
+#s-pill .pl-strip { position: absolute; z-index: 3; left: -6px; top: var(--pl-st, 12px); width: calc(100% + 12px); height: var(--pl-h, 46px); }
+#s-pill .pl-piece { position: absolute; }
+#s-pill .pl-piece > svg, #s-pill .pl-shadow { position: absolute; pointer-events: none; }
+#s-pill .pl-shadow { background: 0 0 / 100% 100% no-repeat; }
+#s-pill .pl-shadow.lift { opacity: 0; transition: opacity .6s; }
+#s-pill .pl-seams { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+#s-pill .pl-seams path { fill: none; stroke: rgb(8 9 12 / .9); stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: 1; }
+#s-pill .pl-bench:not(.cutting) .pl-seams { opacity: 0; }
+
+/* the capsule: when the offcuts go, it lifts off the monitor a little. It floats. */
+#s-pill .pl-cap { z-index: 2; transition: translate .7s cubic-bezier(.3, .7, .3, 1); }
+#s-pill .pl-bench.cut-r .pl-cap { translate: 2px 4px; }
+#s-pill .pl-bench.cut-r .pl-cap .pl-shadow.lift { opacity: 1; }
+#s-pill .pl-bench.cut-r .pl-cap .pl-shadow.rest { opacity: 0; transition: opacity .6s; }
+
+/* the offcuts fall (gravity going down, an easy return) and stay where they land */
+#s-pill .pl-off { z-index: 1; transition: translate .8s cubic-bezier(.3, .7, .25, 1), rotate .8s cubic-bezier(.3, .7, .25, 1); }
+#s-pill .pl-bench.cut-l .pl-off.l,
+#s-pill .pl-bench.cut-r .pl-off.r { translate: var(--dx) var(--dy); rotate: var(--dr);
+  transition: translate .78s cubic-bezier(.5, 0, .55, 1.12), rotate .9s cubic-bezier(.2, .5, .3, 1); }
+#s-pill .pl-bench.still :is(.pl-off, .pl-cap, .pl-shadow) { transition: none; }
+
+/* what the capsule holds, after the real pill: a recessed date, the time pushed brighter */
+#s-pill .pl-face { position: absolute; top: 0; height: 100%; display: inline-flex; align-items: center; gap: .95em;
+  font-family: var(--k-code); font-size: var(--pl-fs, 14px); line-height: 1; white-space: nowrap; letter-spacing: .01em;
+  color: #989faa; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+#s-pill .pl-face .time { color: #d1d5dc; margin-left: -.35em; }
+#s-pill .pl-face .ws { display: inline-flex; align-items: center; gap: .8em; }
+#s-pill .pl-face .ws i { display: block; width: .62em; height: .62em; border-radius: .16em; box-sizing: border-box; }
+#s-pill .pl-face .ws .on { background: #d1d5dc; }
+#s-pill .pl-face .ws .dot { width: .38em; height: .38em; border-radius: 50%; border: 1.3px solid #7c818b; }
+#s-pill .pl-face .ws .sq { border: 1.6px solid #b4b9c2; }
+#s-pill .pl-face .chip { width: 1.05em; height: 1.05em; color: #c3c7ce; }
+#s-pill .pl-face:focus-visible { outline: 2px dashed var(--k-thread); outline-offset: 10px; border-radius: 99px; }
+
+/* the stock line, typed along the strip; it goes where the long offcut goes */
+#s-pill .pl-minus { position: absolute; top: 50%; translate: 0 -50%; margin: 0; white-space: nowrap;
+  font-family: var(--k-code); font-size: 13px; line-height: 1; color: rgb(243 238 225 / .74); }
+#s-pill .pl-minus b { font-weight: 400; color: #e08f7e; margin-right: .5em; }
+#s-pill .pl-bench:not(.long) .pl-minus { display: none; }
+
+/* on a narrow screen the offcut is too short to carry it, so it lies in the pile instead */
+#s-pill .pl-pile { display: none; position: absolute; z-index: 0; left: 2%; top: calc(var(--pl-sh) + 74px); margin: 0; max-width: 92%; }
+#s-pill .pl-bench:not(.long) .pl-pile { display: block; }
+#s-pill .pl-pile .k-slip { font-size: 14px; line-height: 1.45; }
+
+/* a note in the pen, pointing down at the clock */
+#s-pill .pl-hint { position: absolute; bottom: calc(100% + 4px); left: max(0px, var(--pl-hint-x, 300px)); margin: 0;
+  --k-size: 27px; color: var(--ink); white-space: nowrap; rotate: -3deg; }
+#s-pill .pl-hint svg { position: absolute; left: calc(100% + 2px); top: 45%; }
+
+/* a second note, over the far corner: the monitor is showing a morning wallpaper */
+#s-pill .pl-now { position: absolute; bottom: calc(100% + 14px); right: 5%; margin: 0;
+  --k-size: 23px; color: var(--ink); white-space: nowrap; rotate: 2deg; }
+#s-pill .pl-now svg { position: absolute; right: calc(100% + 2px); top: 40%; }
+
+/* the scissors: red card handles, grey card blades */
+#s-pill .pl-scissors { position: absolute; left: 0; top: 0; z-index: 6; width: 150px; height: 70px; transform-origin: 78px 35px;
+  pointer-events: none; transform: translate(-400px, 0); }
+#s-pill .pl-scissors svg { display: block; overflow: visible; }
+#s-pill .pl-scissors .half { transform-origin: 70px 35px; transition: rotate .25s; }
+#s-pill .pl-scissors .half.a { rotate: -5deg; }
+#s-pill .pl-scissors .half.b { rotate: 5deg; }
+#s-pill .pl-scissors .sh { translate: 2px 4px; }
+#s-pill .pl-scissors .sh * { fill: rgb(40 26 12 / .3) !important; stroke: none !important; }
+#s-pill .pl-scissors .blade { fill: #cdd0d4; stroke: #7f838a; stroke-width: .9; stroke-linejoin: round; }
+#s-pill .pl-scissors .arm, #s-pill .pl-scissors .ring { fill: #df5a33; stroke: #a8391c; stroke-width: .7; }
+#s-pill .pl-scissors .half.b :is(.arm, .ring) { fill: #d24e2a; }
+#s-pill .pl-scissors .pivot { fill: #72767c; stroke: #eceded; stroke-width: .9; }
+#s-pill .pl-scissors.snip .half.a { animation: pill-snip-a .2s ease-in-out infinite alternate; }
+#s-pill .pl-scissors.snip .half.b { animation: pill-snip-b .2s ease-in-out infinite alternate; }
+@keyframes pill-snip-a { from { rotate: -16deg; } to { rotate: -1deg; } }
+@keyframes pill-snip-b { from { rotate: 16deg; } to { rotate: 1deg; } }
+
+/* ------------------------------------------------------------ the desk: slip and card */
+#s-pill .pl-desk { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 64px; align-items: start; margin-top: 40px; }
+
+#s-pill .pl-slip { --k-pen-ink: #1f1a1d; --k-muted: #5b544c; padding: 52px 54px 46px; max-width: 42em; color: var(--k-ink); }
+#s-pill .pl-specimen { margin: 0 0 34px; }
+#s-pill .pl-specimen figcaption { font-family: var(--k-type); font-size: 14px; color: var(--k-muted); }
+#s-pill .pl-specimen .top { margin-bottom: 14px; }
+#s-pill .pl-specimen .bot { margin-top: 12px; }
+#s-pill .pl-specimen .shot { position: relative; width: fit-content; max-width: 100%; }
+#s-pill .pl-specimen img { display: block; max-width: 100%; height: auto; box-shadow: 0 1px 2px rgb(30 20 10 / .3), 0 4px 12px rgb(30 20 10 / .18); }
+
+#s-pill .pl-slip .why p { font-family: var(--r-book); font-size: 20px; line-height: 1.6; margin: 0 0 1em; max-width: 34em; }
+#s-pill .pl-slip .why code { font-size: .78em; }
+#s-pill .pl-slip mark { color: inherit; padding: .04em .12em; margin: 0 -.08em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background: linear-gradient(176deg, transparent 10%, rgb(251 209 58 / .62) 14%, rgb(251 209 58 / .5) 84%, transparent 90%); border-radius: .2em .5em .3em .6em; }
+#s-pill .pl-slip .k-seam { margin: 28px 0 30px; }
+
+#s-pill .how { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 16px 22px; margin: 0; align-items: baseline; }
+#s-pill .how dt { margin: 0; }
+#s-pill .how dt .k-slip { font-size: 13px; }
+#s-pill .how dd { margin: 0; font-size: 17px; line-height: 1.55; }
+
+/* the swatch card */
+#s-pill .pl-card { --k-pen-ink: #1f1a1d; --k-muted: #5b544c; margin-top: 70px; padding: 30px 24px 26px; color: var(--k-ink); }
+#s-pill .pl-card-say { --k-size: 26px; margin: 0 0 12px; line-height: 1.2; }
+#s-pill .pl-end { font-size: 11px; }
+#s-pill .pl-end.last { display: table; margin: 12px 0 0 auto; }
+#s-pill .pl-chips { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 12px; }
+#s-pill .pl-chips i { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 1px;
+  background: #222 url(under.webp) calc(var(--c) * 11.1111%) calc(var(--r) * 11.1111%) / 1000% 1000% no-repeat;
+  box-shadow: 0 1px 1.5px rgb(30 20 10 / .35); }
+/* the pill over each one, at its real alpha on its real ground */
+#s-pill .pl-chips i::after { content: '4:35'; position: absolute; left: 5%; top: 8%; width: 54%; height: 26%;
+  display: grid; place-items: center; border-radius: 99px; background: rgb(14 16 19 / .78);
+  font: 500 7.5px/1 var(--k-code); color: #d1d5dc; letter-spacing: .02em; }
+#s-pill .pl-ring { position: absolute; grid-area: 16 / 3 / 17 / 5; width: 118%; height: 150%; left: -9%; top: -25%; color: var(--k-pen-ink); overflow: visible; pointer-events: none; }
+#s-pill .pl-worst { position: absolute; grid-area: 16 / 5 / 17 / 7; margin: 0; --k-size: 17px; line-height: 1.05; padding-left: 10px; align-self: center; rotate: -4deg; }
+#s-pill .pl-card-name { display: block; margin-top: 16px; font-family: var(--k-type); font-size: 13px; color: var(--k-muted); letter-spacing: .04em; }
+
+/* ------------------------------------------------------------ phones */
+@media (max-width: 760px) {
+  #s-pill { padding: 72px 16px 120px; }
+  #s-pill h2 { --k-size: 42px; }
+  #s-pill .pl-bench { margin-top: 70px; padding-bottom: 210px; }
+  #s-pill .pl-screen k-hole { aspect-ratio: 1 / 1.08; }
+  #s-pill .pl-adds { left: 4%; right: 4%; max-width: none; gap: 12px; top: calc(var(--pl-st) + var(--pl-h) + 22px); }
+  #s-pill .pl-adds .k-slip { font-size: 13px; }
+  #s-pill .pl-hint { --k-size: 22px; }
+  #s-pill .pl-now { --k-size: 18px; right: 1%; bottom: calc(100% + 2px); text-align: right; line-height: 1.15; rotate: 2.5deg; }
+  #s-pill .pl-now span { display: block; }
+  #s-pill .pl-now svg { width: 28px; height: 34px; right: calc(100% - 4px); top: 30%; }
+  #s-pill .pl-desk { grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  #s-pill .pl-slip { padding: 42px 22px 34px; }
+  #s-pill .pl-slip .why p { font-size: 18px; line-height: 1.6; }
+  #s-pill .how { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  #s-pill .how dd { margin-bottom: 12px; font-size: 16.5px; }
+  #s-pill .pl-card { margin-top: 0; padding: 26px 18px 22px; }
+}
+@media (max-width: 1100px) and (min-width: 761px) {
+  #s-pill .pl-desk { grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #s-pill :is(.pl-off, .pl-cap, .pl-shadow, .pl-scissors .half) { transition: none; }
+}

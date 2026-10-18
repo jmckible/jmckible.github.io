@@ -1,0 +1,207 @@
+/* swatch: the filmstrip. The track is tall; the stage sticks for its length while the
+   reel is wound under the playhead (section.js sets one transform per frame). The theme
+   under the playhead is written to three registered colours, which ease on their own. */
+
+@property --sw-accent { syntax: '<color>'; inherits: true; initial-value: #8a8a90; }
+@property --sw-bgc    { syntax: '<color>'; inherits: true; initial-value: #1d1d21; }
+@property --sw-fg     { syntax: '<color>'; inherits: true; initial-value: #a9a9ae; }
+
+#s-swatch {
+  --g: 40px;                 /* gutter */
+  --col: 350px;              /* the margin column the hunk is printed down */
+  --cgap: 48px;
+  --fw: 232px; --fh: 130px;  /* a frame */
+  --fgap: 26px;
+  --band: 17px;              /* edge-print band, outside the sprockets */
+  --sph: 20px;               /* sprocket row */
+  --pad: 9px;                /* sprocket row to frame */
+  --film-h: calc(2 * (var(--band) + var(--sph) + var(--pad)) + var(--fh));
+  --top: 104px;              /* clear of the docked icon */
+  --glass: min(calc(100vw - 2 * var(--g) - var(--col) - var(--cgap) - 28px),
+               calc((100svh - var(--top) - 76px - var(--film-h) - 28px) * 16 / 9), 1040px);
+  --span: calc(var(--glass) + 28px + var(--col) + var(--cgap));
+  padding: 72px 0 110px;
+  transition: --sw-accent .5s ease, --sw-bgc .5s ease, --sw-fg .5s ease;
+}
+
+/* ------------------------------------------------------------------ the title */
+#s-swatch .sw-head { position: relative; z-index: 1; width: var(--span); max-width: calc(100% - 2 * var(--g)); margin: 0 auto; box-sizing: border-box; padding: 0 0 0 12px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+#s-swatch .sw-head a.k-slip { text-decoration: none; }
+#s-swatch .sw-head a.k-slip:hover { text-decoration: underline; }
+#s-swatch .sw-head h2 { flex-basis: 100%; --k-size: 60px; font-weight: 400; line-height: 1.05; margin: 10px 0 0; rotate: -1.2deg; }
+
+/* ------------------------------------------------------------------ the stage */
+/* overflow: clip keeps what follows the pinned stage out of a page-high squashing layer
+   (~288 Mpx of layers down to ~146 at 2400 wide, less to re-raster after a window switch).
+   clip, not hidden: hidden would make the track a scroller and break the sticky stage. */
+#s-swatch .sw-track { position: relative; height: calc(100svh + 110vh); margin-top: calc(34px - var(--top)); overflow: clip; }
+#s-swatch .sw-stage {
+  position: sticky; top: 0; height: 100svh; box-sizing: border-box;
+  padding: var(--top) var(--g) 22px;
+  display: grid; grid-template-columns: calc(var(--glass) + 28px) var(--col); grid-template-rows: minmax(0, 1fr) auto;
+  justify-content: center; column-gap: var(--cgap); row-gap: 54px;
+}
+
+/* the screen: black paper, the desktop showing through */
+#s-swatch .sw-screen { z-index: 1; grid-area: 1 / 1; }
+#s-swatch .sw-tint { grid-area: 1 / 1; align-self: center; justify-self: start; z-index: 0; width: calc(var(--glass) * .9); aspect-ratio: 16 / 8.2;
+  translate: -52px 40px; rotate: -3deg; --k-c: var(--sw-tint, #b9b6ae); }
+#s-swatch .sw-screen { align-self: center; padding: 14px; width: var(--glass); rotate: -.4deg; }
+#s-swatch .sw-glass { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 2px;
+  background: var(--sw-bgc); container-type: inline-size; }
+#s-swatch .sw-glass > * { position: absolute; }
+
+/* stock: Omarchy's own picker, captured */
+#s-swatch .sw-stock { inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .35s; }
+
+/* mine: the candidate fills the screen */
+#s-swatch .sw-shots { inset: 0; }
+#s-swatch .sw-shots img, #s-swatch .sw-final { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .35s ease; }
+#s-swatch .sw-shots img.on, #s-swatch .sw-final.on { opacity: 1; }
+
+/* the bar and the name retint with every step */
+#s-swatch .sw-bar { left: 0; right: 0; top: 0; height: max(14px, 3.2cqw); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 1.4cqw; box-sizing: border-box;
+  background: color-mix(in srgb, var(--sw-bgc) 90%, transparent); font: 600 max(8px, 1.2cqw)/1 var(--k-code); color: var(--sw-fg);
+  transition: opacity .35s; }
+#s-swatch .sw-bar .ws { display: flex; gap: 1.1cqw; }
+#s-swatch .sw-bar .ws b.on { color: var(--sw-accent); }
+#s-swatch .sw-bar .tray { display: flex; gap: .8cqw; }
+#s-swatch .sw-bar .tray i { width: .9cqw; height: .9cqw; border-radius: 50%; background: var(--sw-fg); opacity: .7; }
+#s-swatch .sw-bar .tray i:first-child { background: var(--sw-accent); opacity: 1; }
+#s-swatch .sw-osd { left: 3cqw; top: 6.4cqw; display: grid; gap: 1.1cqw; transition: opacity .35s; }
+#s-swatch .sw-osd .nm { font: 600 max(15px, 3.4cqw)/1 var(--k-code); color: #fff; text-shadow: 0 1px 2px #0009, 0 0 1.4cqw #0006; }
+#s-swatch .sw-osd .stripe { width: 13cqw; height: max(3px, .6cqw); background: var(--pal, var(--sw-accent)); }
+#s-swatch .sw-stage[data-at="stock"] .sw-osd,
+#s-swatch .sw-stage[data-at="stock"] .sw-bar,
+#s-swatch .sw-stage[data-at="final"] .sw-osd,
+#s-swatch .sw-stage[data-at="final"] .sw-bar { opacity: 0; }
+#s-swatch .sw-stage:not([data-at="stock"]) .sw-stock { opacity: 0; }
+
+/* ------------------------------------------------------------------ the hunk, down the margin */
+#s-swatch .sw-subs { grid-area: 1 / 2; align-self: center; display: grid; gap: 16px; justify-items: start; }
+#s-swatch .sw-subs ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+#s-swatch .sw-subs .k-slip { font: 400 15px/1.45 var(--k-code); letter-spacing: 0; padding: .5em .8em .45em 2em; text-indent: -1.2em; }
+#s-swatch .sw-subs .k-slip b { display: inline-block; width: 1.2em; text-indent: 0; font-weight: 600; }
+#s-swatch .sw-subs .ctx { font-family: var(--k-type); padding-left: .8em; text-indent: 0; font-size: 14px; }
+#s-swatch .sw-subs li { transition: translate .3s ease; }
+#s-swatch .sw-subs li .k-slip { transition: --k-c .3s; }
+/* the line for what's on screen is lit with the theme's own accent */
+#s-swatch .sw-subs li.lit { translate: -8px 0; }
+#s-swatch .sw-subs li.add.lit .k-slip { --k-c: color-mix(in srgb, var(--sw-accent) 48%, #f3eee1); }
+#s-swatch .sw-subs li.del.lit .k-slip { --k-c: #bdb7a9; }
+
+/* ------------------------------------------------------------------ the gate and the film */
+#s-swatch .sw-gate { grid-column: 1 / -1; position: relative; height: var(--film-h); margin: 0 calc(50% - 50vw); }
+#s-swatch .sw-reel { position: absolute; left: 0; top: 0; height: 100%; will-change: transform; }
+#s-swatch .sw-shadow { position: absolute; inset: 0; border-radius: 2px; box-shadow: 2px 7px 12px rgb(40 24 10 / .34), 0 1px 2px rgb(40 24 10 / .3); }
+#s-swatch .sw-film {
+  position: relative; height: 100%; display: flex; align-items: center; gap: var(--fgap);
+  padding: 0 calc(var(--fgap) / 2) 0 0;
+  background: url(../../identity/kit/tex/paper.webp) 0 0 / 420px, #1f1c1c;
+  background-blend-mode: soft-light, normal;
+  /* punched: two rows of sprocket holes */
+  --hole: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='20'%3E%3Cpath fill-rule='evenodd' d='M0 0H24V20H0Z M8.5 3.5h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z'/%3E%3C/svg%3E");
+  mask:
+    var(--hole) 0 var(--band) / calc(var(--sph) * 1.2) var(--sph) repeat-x,
+    var(--hole) 0 calc(100% - var(--band)) / calc(var(--sph) * 1.2) var(--sph) repeat-x,
+    linear-gradient(#000 0 0) 0 0 / 100% var(--band) no-repeat,
+    linear-gradient(#000 0 0) 0 100% / 100% var(--band) no-repeat,
+    linear-gradient(#000 0 0) 0 50% / 100% calc(100% - 2 * (var(--band) + var(--sph))) no-repeat;
+}
+#s-swatch .sw-film > * { flex: none; position: relative; }
+#s-swatch .leader { width: calc(2 * var(--fw) + var(--fgap)); height: var(--fh); display: grid; place-content: center; gap: 4px;
+  text-align: center; color: #d9cfbd; }
+#s-swatch .leader span { font: 400 13px/1 var(--k-type); letter-spacing: .3em; opacity: .75; }
+#s-swatch .leader em { font-style: normal; font-family: var(--k-hand); --k-size: 30px; font-size: calc(var(--k-size) * var(--k-hand-scale)); rotate: -4deg; color: var(--k-cream); }
+#s-swatch .tail { width: calc(3 * var(--fw)); height: var(--fh); display: grid; align-content: center; padding-left: 20px;
+  font: 400 13px/1 var(--k-type); letter-spacing: .3em; color: #d9cfbd; opacity: .7; }
+
+#s-swatch .fr { width: var(--fw); height: var(--fh); border-radius: 3px; background: var(--c, #333); }
+#s-swatch .fr img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
+#s-swatch .fr::after { content: ''; position: absolute; inset: 55% 0 0; border-radius: 0 0 3px 3px;
+  background: linear-gradient(transparent, rgb(0 0 0 / .55)); }
+#s-swatch .fr .nm { position: absolute; z-index: 1; left: 9px; bottom: 11px; font: 600 12px/1 var(--k-code); color: #fff; }
+#s-swatch .fr img { transition: opacity .3s; }
+#s-swatch .sw-film.run .fr:not(.at) img { opacity: .74; }
+#s-swatch .fr .pal { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 0 0 3px 3px; background: var(--pal); }
+/* edge printing: key numbers above, the hunk's lines below */
+#s-swatch .fr .kn, #s-swatch .fr .ep { position: absolute; left: 2px; white-space: nowrap;
+  font: 500 10px/var(--band) var(--k-code); letter-spacing: .14em; text-transform: uppercase; color: #e3a857; }
+#s-swatch .fr .kn { bottom: calc(100% + var(--pad) + var(--sph)); }
+#s-swatch .fr .ep { top: calc(100% + var(--pad) + var(--sph)); text-transform: none; letter-spacing: .06em; }
+#s-swatch .leader .ep { position: absolute; left: 14px; top: calc(100% + var(--pad) + var(--sph)); white-space: nowrap;
+  font: 500 10px/var(--band) var(--k-code); letter-spacing: .06em; color: #e3a857; }
+
+/* the playhead: corner brackets cut from the theme's accent, fixed over the gate */
+#s-swatch .sw-playhead { --m: 9px; --t: 7px; --L: 34px; position: absolute; left: 50%; top: calc(var(--band) + var(--sph) + var(--pad) - var(--m));
+  width: calc(var(--fw) + 2 * var(--m)); height: calc(var(--fh) + 2 * var(--m)); translate: -50% 0; pointer-events: none; }
+#s-swatch .sw-playhead .br { position: absolute; --k-pad: 6px; --k-c: var(--sw-accent); }
+#s-swatch .br.a { width: var(--L); height: var(--t); }
+#s-swatch .br.b { width: var(--t); height: var(--L); }
+#s-swatch .br.tl { left: 0; top: 0; } #s-swatch .br.tr { right: 0; top: 0; }
+#s-swatch .br.bl { left: 0; bottom: 0; } #s-swatch .br.brr { right: 0; bottom: 0; }
+#s-swatch .sw-playhead .count { position: absolute; left: 4px; bottom: calc(100% + var(--band) + var(--sph) + var(--pad) - var(--m) + 12px);
+  font: 400 13px/1.2 var(--k-code); white-space: nowrap; }
+#s-swatch .sw-playhead .count b { font-weight: 600; }
+#s-swatch .sw-playhead .hl { position: absolute; right: 0; bottom: calc(100% + var(--band) + var(--sph) + var(--pad) - var(--m) + 8px);
+  --k-size: 26px; rotate: -6deg; color: var(--ink); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ the caption strip */
+#s-swatch .sw-caption {
+  max-width: 1060px; margin: 0 auto; box-sizing: border-box; width: calc(100% - 2 * var(--g));
+  padding: 60px clamp(22px, 5vw, 64px) 66px;
+  display: grid; grid-template-columns: minmax(0, 33em) minmax(0, 290px); gap: 36px 60px; justify-content: center;
+  --k-c: color-mix(in srgb, #f3eee1 90%, var(--light-end)); color: var(--k-ink); rotate: .35deg;
+}
+#s-swatch .why p { font: 400 20px/1.62 var(--r-book); margin: 0 0 1em; }
+#s-swatch .why p:last-child { margin-bottom: 0; }
+#s-swatch .why b { font-weight: 600; }
+#s-swatch .how { margin: 6px 0 0; display: grid; gap: 22px; align-content: start; }
+#s-swatch .how dt { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+#s-swatch .how dd { margin: 8px 0 0; font: 400 16px/1.55 var(--k-prose); }
+#s-swatch .how code { font-size: .88em; overflow-wrap: anywhere; }
+
+/* ------------------------------------------------------------------ phones */
+@media (max-width: 1100px) {
+  #s-swatch { --col: 290px; --cgap: 32px; --g: 28px; }
+  #s-swatch .sw-subs .k-slip { font-size: 14px; }
+}
+@media (max-width: 860px) {
+  #s-swatch {
+    --g: 16px; --fw: 150px; --fh: 84px; --fgap: 16px; --band: 13px; --sph: 14px; --pad: 6px; --top: 70px;
+    --glass: min(calc(100vw - 2 * var(--g) - 20px), calc((100svh - var(--top) - 250px - var(--film-h)) * 16 / 9));
+    padding: 56px 0 80px;
+  }
+  #s-swatch .sw-head { padding: 0 var(--g) 0 var(--g); }
+  #s-swatch .sw-head h2 { --k-size: 40px; }
+  #s-swatch .sw-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; align-content: center; row-gap: 18px; padding-bottom: 12px; }
+  #s-swatch .sw-gate { margin-top: 44px; }
+  #s-swatch .fr:nth-child(4n) .ep { display: none; }
+  #s-swatch .sw-screen { padding: 10px; justify-self: center; align-self: start; }
+  #s-swatch .sw-subs { grid-area: 2 / 1; align-self: start; gap: 8px; }
+  #s-swatch .sw-tint { translate: -18px 22px; }
+  #s-swatch .sw-subs ul { gap: 6px; }
+  #s-swatch .sw-subs .k-slip { font-size: 13px; line-height: 1.4; }
+  #s-swatch .sw-subs .ctx { font-size: 12px; }
+  #s-swatch .sw-subs li.lit { translate: 6px 0; }
+  #s-swatch .fr .nm { font-size: 10px; left: 6px; bottom: 8px; }
+  #s-swatch .fr .kn, #s-swatch .fr .ep, #s-swatch .leader .ep { font-size: 8px; }
+  #s-swatch .sw-playhead { --m: 6px; --t: 5px; --L: 22px; }
+  #s-swatch .sw-playhead .hl { --k-size: 20px; }
+  #s-swatch .leader em { --k-size: 22px; }
+  #s-swatch .sw-caption { grid-template-columns: minmax(0, 1fr); padding: 44px 22px 48px; rotate: 0deg; }
+  #s-swatch .why p { font-size: 18px; }
+}
+
+/* ------------------------------------------------------------------ still */
+@media (prefers-reduced-motion: reduce) {
+  #s-swatch .sw-track { height: auto; }
+  #s-swatch .sw-stage { position: relative; height: auto; min-height: 0; }
+  #s-swatch .sw-screen { align-self: start; }
+  #s-swatch, #s-swatch * { transition: none !important; }
+}
+#s-swatch.sw-still .sw-track { height: auto; }
+#s-swatch.sw-still .sw-stage { position: relative; height: auto; }

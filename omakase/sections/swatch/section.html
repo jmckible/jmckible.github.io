@@ -1,0 +1,68 @@
+<!-- swatch: a filmstrip under a fixed playhead. Scroll winds the film on; whatever lands
+     under the brackets is already wearing its theme on the screen above. The reading
+     text is the caption strip taped to the end of the roll. -->
+<header class="sw-head">
+  <span class="k-slip" data-tilt="-1.2">@@ style.theme @@ omarchy-menu.jsonc</span>
+  <a class="k-slip k-yellow" data-tilt="1" href="https://github.com/jmckible/omarchy-swatch">github.com/jmckible/omarchy-swatch</a>
+  <h2 class="k-pen">Swatch tries the theme on</h2>
+</header>
+
+<div class="sw-track">
+  <div class="sw-stage">
+
+    <!-- a sheet of tissue in the theme's accent: the page wears it too -->
+    <span class="sw-tint k-tissue" data-seed="sw-tint" aria-hidden="true"></span>
+
+    <!-- the screen: black paper with the desktop showing through -->
+    <div class="sw-screen k-paper k-black" data-seed="sw-screen" data-tape="tr">
+      <div class="sw-glass">
+        <!-- stock: Omarchy's own picker, a cover-flow of preview shots over whatever you had -->
+        <img class="sw-stock" alt="The stock Omarchy theme picker: a row of theme preview screenshots over the current dark wallpaper, Flexoki Light highlighted in the middle" decoding="async" src="img/stock.webp">
+        <div class="sw-shots"></div>
+        <img class="sw-final" alt="Swatch landed on drivetrain: wallpaper 59, a wall of pastel tiles, fills the screen, with the filmstrip of themes along the bottom and a terminal already in the theme's colours" decoding="async" src="../../img/swatch.webp">
+        <!-- the bar retints with every step -->
+        <div class="sw-bar" aria-hidden="true"><span class="ws"><b>1</b><b class="on">2</b><b>3</b><b>4</b></span><span class="tray"><i></i><i></i><i></i></span></div>
+        <div class="sw-osd" aria-hidden="true"><span class="nm">tokyo-night</span><i class="stripe"></i></div>
+      </div>
+    </div>
+
+    <!-- the hunk, printed down the margin; the line for what's on screen is lit -->
+    <div class="sw-subs">
+      <span class="k-slip ctx" data-tilt="-.8">SUPER+SHIFT+CTRL+SPACE</span>
+      <ul>
+        <li class="del" data-tilt="-.6"><span class="k-slip k-grey"><b>-</b>a list of theme names; pick one and see what happens</span></li>
+        <li class="add" data-tilt=".5"><span class="k-slip"><b>+</b>the candidate's wallpaper fills the screen, edge to edge</span></li>
+        <li class="add" data-tilt="-.4"><span class="k-slip"><b>+</b>the bar, menus and the picker itself retint as you scrub</span></li>
+      </ul>
+    </div>
+
+    <!-- the gate: the film runs under a fixed playhead -->
+    <div class="sw-gate" aria-hidden="true">
+      <div class="sw-reel">
+        <div class="sw-shadow"></div>
+        <div class="sw-film"><div class="leader"><span>HEAD</span><em>stock</em></div></div>
+      </div>
+      <div class="sw-playhead">
+        <span class="k-slip count" data-tilt="-2"><b class="n">·</b> / <b class="of">3</b></span>
+        <span class="k-pen hl">h / l</span>
+        <i class="k-paper br tl a" data-seed="sw-b1"></i><i class="k-paper br tl b" data-seed="sw-b2"></i>
+        <i class="k-paper br tr a" data-seed="sw-b3"></i><i class="k-paper br tr b" data-seed="sw-b4"></i>
+        <i class="k-paper br bl a" data-seed="sw-b5"></i><i class="k-paper br bl b" data-seed="sw-b6"></i>
+        <i class="k-paper br brr a" data-seed="sw-b7"></i><i class="k-paper br brr b" data-seed="sw-b8"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- the caption strip, taped to the tail of the roll -->
+<div class="sw-caption k-paper k-cream" data-seed="sw-caption" data-torn="bottom" data-tape="tl tr">
+  <div class="why">
+    <p>A theme is a palette <b>and</b> a set of wallpapers, and the stock picker shows you neither until you commit. Swatch is a filmstrip under a fixed playhead: what you land on is already wearing the theme, so the choice is made by looking rather than by remembering.</p>
+    <p>It stays instant at any collection size. Cards are painted from the palette before any image decodes, the filmstrip is recycled, and at most five screen-size wallpapers are ever resident.</p>
+  </div>
+  <dl class="how">
+    <div><dt class="k-slip" data-tilt="-1.5">what it is</dt><dd>A Quickshell plugin, <code>jmckible.swatch</code>. One line in the menu extension routes the hotkey and Style › Theme to it.</dd></div>
+    <div><dt class="k-slip k-pink" data-tilt="1">touches</dt><dd>Nothing. It never edits your config or theme files; remove the line and the stock picker is back.</dd></div>
+    <div><dt class="k-slip k-blue" data-tilt="-.8">install</dt><dd><code>omarchy plugin add …/omarchy-swatch.git --enable</code></dd></div>
+  </dl>
+</div>

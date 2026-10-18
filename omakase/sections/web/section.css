@@ -1,0 +1,198 @@
+/* The web. A printout of X is cut down to its one column as you scroll; the rails fall
+   into an offcut pile; what's left retints in the desktop palette. section.js sets one
+   number, --u, on the stage: 0 when the scissors start, 1 when they reach the bottom.
+   Everything after is timed off it. Without script (or under reduced motion) --u is 2:
+   cut, fallen, retinted. */
+
+#s-web { padding: 90px 16px 140px; }
+#s-web .web-wrap { max-width: 1180px; margin: 0 auto; }
+
+/* ---------------------------------------------------------------- the head */
+#s-web .web-head { max-width: 820px; margin: 0 0 34px 2%; }
+#s-web .web-head h2 { --k-size: 54px; text-wrap: balance; font-weight: 400; line-height: 1.12; margin: 16px 0 16px; }
+#s-web .web-links { display: flex; flex-wrap: wrap; gap: 10px 14px; margin: 0; }
+#s-web .web-links a { text-decoration: none; }
+
+/* ---------------------------------------------------------------- the stage */
+#s-web .web-stage {
+  --u: 2;
+  --T: 5cqw;             /* the sheet's top, below the helium slip */
+  --H: 61.4cqw;          /* the sheet's height */
+  --print: #f6f4ee;      /* printer paper */
+  --toner: #3a3a3a;
+  container-type: inline-size;
+  position: relative; margin: 0;
+}
+#s-web .web-desk { position: relative; height: 94cqw; }
+
+/* a piece of the printout */
+#s-web .web-pc {
+  position: absolute; box-sizing: border-box; z-index: 2;
+  --k-paper: var(--print); --k-pad: 6px;
+  color: var(--toner); font-family: var(--k-prose); font-size: 1.18cqw; line-height: 1.35;
+  top: var(--T); height: var(--H);
+  /* each piece falls on its own clock: q goes 0 to 1 across [a, a + d] of --u */
+  --q: clamp(0, (var(--u) - var(--a, 9)) / var(--d, 1), 1);
+  transform: translate(calc(var(--dx, 0cqw) * var(--q)), calc(var(--dy, 0cqw) * var(--q) * var(--q)))
+             rotate(calc(var(--r, 0deg) * var(--q) * var(--q)));
+  will-change: transform;
+}
+#s-web .web-nav   { left: 6cqw;  width: 20cqw; padding: 0 1.4cqw; z-index: 3;
+  --a: .98; --d: .42; --dx: 9cqw;  --dy: 42cqw; --r: -84deg; }
+#s-web .web-col   { left: 26cqw; width: 40cqw; padding: 0 1.2cqw; z-index: 4; height: auto; }
+#s-web .web-top   { left: 66cqw; width: 28cqw; height: 20cqw; padding: 0 1.6cqw; z-index: 3;
+  --a: 1.02; --d: .4; --dx: 0cqw; --dy: 47cqw; --r: 8deg; }
+#s-web .web-trend { left: 66cqw; width: 28cqw; top: calc(var(--T) + 20cqw); height: 21.5cqw; padding: 1.4cqw 1.6cqw;
+  --a: 1.07; --d: .4; --dx: -8cqw; --dy: 38cqw; --r: -8deg; }
+#s-web .web-who   { left: 66cqw; width: 28cqw; top: calc(var(--T) + 41.5cqw); height: 19.9cqw; padding: 1.4cqw 1.6cqw;
+  --a: 1.12; --d: .4; --dx: -27cqw; --dy: 24cqw; --r: 7deg; }
+
+/* print header and footer, the way a browser prints them */
+#s-web .web-ph, #s-web .web-pf { height: 2.4cqw; display: flex; align-items: center; justify-content: space-between;
+  font-size: .95cqw; color: #6b6b6b; white-space: nowrap; }
+#s-web .web-title { justify-content: center; }
+#s-web .web-pf { position: absolute; bottom: 0; left: 1.4cqw; }
+#s-web .web-col .web-pf { position: static; }
+#s-web .web-pn { left: auto; right: 1.6cqw; }
+
+/* the rail */
+#s-web .web-navlist { display: flex; flex-direction: column; gap: 1.05cqw; margin-top: 1.2cqw; font-size: 1.45cqw; }
+#s-web .web-navlist span { display: flex; align-items: center; gap: 1cqw; }
+#s-web .web-pc i { flex: none; display: inline-block; width: 1.6cqw; height: 1.6cqw; border-radius: 30%; background: #9a9a9a; }
+#s-web .web-post { display: block; margin-top: .8cqw; padding: .9cqw 0; border-radius: 3cqw; background: #444; color: var(--print);
+  text-align: center; font-size: 1.35cqw; }
+#s-web .web-me { position: absolute; left: 1.4cqw; right: 1.4cqw; bottom: 4cqw; display: flex; gap: .9cqw; align-items: center; font-size: 1.1cqw; font-weight: 600; }
+#s-web .web-me i { width: 2.8cqw; height: 2.8cqw; border-radius: 50%; }
+#s-web .web-me small { display: block; font-weight: 400; color: #777; }
+
+/* the right column: search and the upsell, trends, who to follow */
+#s-web .web-search { display: flex; gap: .8cqw; align-items: center; padding: .7cqw 1.2cqw; border-radius: 3cqw; background: #e4e2dc; color: #777; }
+#s-web .web-search i { width: 1.1cqw; height: 1.1cqw; border-radius: 50%; }
+#s-web .web-box { margin-top: 1cqw; padding: 1cqw 1.2cqw; border-radius: .9cqw; background: #ebe9e3; display: flex; flex-direction: column; gap: .4cqw; }
+#s-web .web-box b { font-size: 1.45cqw; }
+#s-web .web-pc em { font-style: normal; font-weight: 600; }
+#s-web .web-box em, #s-web .web-who em { align-self: flex-start; padding: .35cqw 1cqw; border-radius: 2cqw; background: #444; color: var(--print); font-size: 1cqw; }
+#s-web .web-trend, #s-web .web-who { display: flex; flex-direction: column; gap: .8cqw; }
+#s-web .web-trend b, #s-web .web-who b { font-size: 1.5cqw; }
+#s-web .web-trend span { display: flex; flex-direction: column; font-weight: 600; }
+#s-web .web-trend small { font-weight: 400; font-size: .95cqw; color: #777; }
+#s-web .web-pc u { display: block; height: 1cqw; width: 62%; margin-top: .2cqw; border-radius: 1cqw; background: #bdbbb5; text-decoration: none; }
+#s-web .web-trend > em { font-weight: 400; color: #666; }
+#s-web .web-who span { display: flex; align-items: center; gap: .9cqw; }
+#s-web .web-who span i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; }
+#s-web .web-who span u { flex: none; margin: 0; }
+#s-web .web-who span em { margin-left: auto; align-self: center; }
+#s-web .web-legal { font-size: .85cqw; color: #888; line-height: 1.4; }
+
+/* the kept column: the page printed, and the same page in the desktop palette over it */
+#s-web .web-shot { position: relative; overflow: hidden; aspect-ratio: 800 / 1204; }
+#s-web .web-shot img { display: block; width: 100%; height: 100%; }
+#s-web .web-print { mix-blend-mode: multiply; }
+#s-web .web-tint { position: absolute; inset: 0; overflow: hidden;
+  --t: clamp(0, (var(--u) - 1.16) / .34, 1);
+  transform: translateY(calc((var(--t) - 1) * (100% + 4px))); will-change: transform; }
+#s-web .web-tint-in { height: 100%; transform: translateY(calc((1 - var(--t)) * (100% + 4px))); will-change: transform; }
+
+/* the stock line, taped to a piece that gets cut away */
+#s-web .web-minus { position: relative; display: block; margin: 1.3cqw .4cqw 0 1.4cqw; font-size: max(12px, 1.12cqw); }
+
+/* ---------------------------------------------------------------- the cut */
+#s-web .web-helium { position: absolute; z-index: 6; left: 12cqw; top: .2cqw; font-size: max(12px, 1.2cqw); }
+#s-web .web-scissors {
+  position: absolute; z-index: 7; top: calc(var(--T) - 5.2cqw); width: 3.4cqw; height: 5.44cqw; margin-left: -1.7cqw;
+  fill: none; stroke: var(--k-pen-ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; overflow: visible;
+  --c: clamp(0, var(--u) - var(--lag, 0), 1);
+  /* once through, they're set down on the desk */
+  --k: clamp(0, (var(--u) - 1.02) / .3, 1);
+  transform-origin: 50% 100%;
+  transform: translateY(calc(var(--c) * var(--H) + var(--k) * 3cqw)) rotate(calc(var(--k) * var(--lie, -76deg)));
+}
+#s-web .web-scissors circle { fill: var(--k-pen-ink); stroke: none; }
+#s-web .web-sc-l { left: 26cqw; }
+#s-web .web-sc-r { left: 66cqw; --lag: .05; --lie: -28deg; }
+#s-web .web-scissors .bl { transform-box: view-box; transform-origin: 20px 40px;
+  /* the blades open and close as you scroll, and rest shut */
+  --snip: calc(sin(var(--c) * 46rad) * 11deg * (1 - var(--c) * var(--c) * var(--c) * var(--c))); }
+#s-web .web-scissors .a { transform: rotate(var(--snip)); }
+#s-web .web-scissors .b { transform: rotate(calc(var(--snip) * -1)); }
+
+#s-web .web-offcut { position: absolute; z-index: 4; left: 3cqw; top: 86cqw; margin: 0; --k-size: max(22px, 2.1cqw); rotate: -4deg;
+  opacity: clamp(0, (var(--u) - 1.4) / .15, 1); }
+
+/* ---------------------------------------------------------------- under the rails */
+#s-web .web-under { position: absolute; z-index: 1; }
+#s-web .web-under-l { left: 7cqw; top: calc(var(--T) + 3cqw); width: 17.5cqw; }
+#s-web .web-under-r { left: 68cqw; top: calc(var(--T) + 1.5cqw); width: 25cqw; }
+#s-web .web-plus { font-size: max(12.5px, 1.2cqw); }
+#s-web .web-chips { display: flex; flex-direction: column; gap: 1.1cqw; margin: 2.4cqw 0 0 1cqw; }
+#s-web .web-chip { --k-paper: var(--chip); display: block; padding: 1.8cqw 1.1cqw .5cqw; width: 15.5cqw; box-sizing: border-box; white-space: nowrap; }
+#s-web .web-chip:nth-child(1) { rotate: -2deg; color: #efe6cf; }
+#s-web .web-chip:nth-child(2) { rotate: 1.5deg; margin-left: 1.4cqw; color: #2d353b; }
+#s-web .web-chip:nth-child(3) { rotate: -1deg; color: #20292d; }
+#s-web .web-chip code { font-size: max(10px, .92cqw); }
+#s-web .web-todo { --k-size: max(20px, 1.9cqw); margin: 2.6cqw 0 0; rotate: -3deg; line-height: 1.25; }
+
+#s-web .web-css { --k-paper: var(--print); rotate: 1.2deg; padding: 2.2cqw 1.6cqw 1.8cqw; color: #2f3337; }
+#s-web .web-css .k-slip { font-size: max(11px, 1.05cqw); }
+#s-web .web-css pre { margin: 1.4cqw 0 0; font-family: var(--k-code); font-size: .9cqw; line-height: 1.5; white-space: pre; overflow: hidden; }
+#s-web .web-agent { margin: 2cqw 0 0 3cqw; }
+
+#s-web figcaption { display: flex; flex-wrap: wrap; gap: 10px 14px; justify-content: flex-end; margin: -2cqw 4% 0 0; position: relative; z-index: 5; }
+#s-web figcaption .k-slip:nth-child(2) { rotate: 1deg; }
+
+/* ---------------------------------------------------------------- the reading */
+#s-web .web-reading { margin: 90px 0 0; display: grid; justify-items: start; }
+#s-web .web-page {
+  --k-paper: #2d353b; --k-thread: #7fbbb3;
+  box-sizing: border-box; width: min(100%, 780px); margin-left: max(0px, calc(46% - 390px));  /* under the kept column */ padding: 0 64px 0; rotate: -.6deg;
+  color: #d3c6aa; font-family: var(--r-book); font-size: 20px; line-height: 1.62;
+}
+#s-web .web-page .web-ph, #s-web .web-page .web-pf { position: static; height: auto; padding: 16px 0; font-family: var(--k-prose); font-size: 12.5px; color: #859289; }
+#s-web .web-page .web-ph { margin: 0 0 18px; }
+#s-web .web-page .web-pf { margin-top: 22px; }
+#s-web .web-page p { margin: 0 0 1.05em; }
+#s-web .web-page b { color: #e9e0c8; font-weight: 600; }
+#s-web .web-page a { color: #7fbbb3; text-decoration-color: rgb(127 187 179 / .45); }
+#s-web .web-page code { color: #a7c080; }
+#s-web .web-page .k-seam { margin: 30px 0 22px; }
+#s-web .web-how { display: grid; grid-template-columns: 5.2em 1fr; gap: 12px 18px; margin: 0; font-family: var(--k-prose); font-size: 16px; line-height: 1.55; }
+#s-web .web-how dt { font-family: var(--k-code); font-size: 13px; color: #7fbbb3; padding-top: 3px; }
+#s-web .web-how dd { margin: 0; }
+
+/* ---------------------------------------------------------------- phones */
+@media (max-width: 760px) {
+  #s-web { padding: 64px 16px 100px; }
+  #s-web .web-head { margin-left: 0; }
+  #s-web .web-head h2 { --k-size: 36px; }
+  #s-web .web-stage { margin: 0 -10px; }
+  /* on a phone the kept column takes half the width; the rails are slivers */
+  #s-web .web-stage { --T: 12cqw; --H: 79.4cqw; }
+  #s-web .web-desk { height: auto; padding-top: 132cqw; }
+  #s-web .web-helium { left: 3cqw; right: 3cqw; top: 0; font-size: 12px; }
+  #s-web .web-nav   { left: 2cqw; width: 18cqw; padding: 0 1cqw; --dx: 15cqw; --dy: 54cqw; }
+  #s-web .web-col   { left: 20cqw; width: 52cqw; }
+  #s-web .web-top   { left: 72cqw; width: 26cqw; height: 26cqw; padding: 0 1.2cqw; --dx: -4cqw; --dy: 74cqw; --r: 9deg; }
+  #s-web .web-trend { left: 72cqw; width: 26cqw; top: calc(var(--T) + 26cqw); height: 28cqw; padding: 1.2cqw; --dx: -16cqw; --dy: 55cqw; }
+  #s-web .web-who   { left: 72cqw; width: 26cqw; top: calc(var(--T) + 54cqw); height: 25.4cqw; padding: 1.2cqw; --dx: -30cqw; --dy: 33cqw; }
+  #s-web .web-pf { left: 1cqw; }
+  #s-web .web-minus { font-size: 8px; margin: 1.5cqw 0 0; padding: .3em .4em; }
+  #s-web .web-scissors { width: 5.4cqw; height: 8.64cqw; margin-left: -2.7cqw; top: calc(var(--T) - 8.2cqw); }
+  #s-web .web-sc-l { left: 20cqw; }
+  #s-web .web-sc-r { left: 72cqw; }
+  #s-web .web-offcut { top: 121cqw; left: 4cqw; --k-size: 22px; }
+  #s-web .web-under { position: static; width: auto; margin: 16px 10px 0; }
+  #s-web .web-under-l { display: grid; gap: 14px; }
+  #s-web .web-chips { flex-direction: row; flex-wrap: wrap; margin: 4px 0 0; gap: 10px; }
+  #s-web .web-chip { width: auto; padding: 18px 10px 5px; }
+  #s-web .web-chip code { font-size: 11px; }
+  #s-web .web-todo { margin: 6px 0 0; }
+  #s-web .web-under-r { margin-top: 26px; }
+  #s-web .web-css { padding: 20px 16px 16px; }
+  #s-web .web-css pre { font-size: 11px; }
+  #s-web .web-agent { margin: 16px 0 0 8px; }
+  #s-web figcaption { justify-content: flex-start; margin: 22px 0 0 10px; }
+  #s-web .web-reading { margin-top: 56px; }
+  #s-web .web-page { margin: 0 -4px; width: calc(100% + 8px); padding: 0 22px; font-size: 18px; rotate: -.4deg; }
+  #s-web .web-how { grid-template-columns: 1fr; gap: 2px; font-size: 15.5px; }
+  #s-web .web-how dd { margin-bottom: 12px; }
+}

@@ -1,38 +1,248 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<!doctype html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jordan McKible</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="canonical" href="http://jordan.mckible.com"/>
-<link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="screen" />
+<meta name="description" content="Jordan McKible cofounded Vocal Video. Outside work he builds software for his own desktop and household.">
+<link rel="canonical" href="https://jordan.mckible.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #fbf4e4;          /* the portrait's own paper, so it can fade into the page */
+    --ink: #2a2420;
+    --grey: #6f655c;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --spine: 15rem;             /* the name column; everything else starts at the spine */
+    --gap: 3.5rem;
+    --measure: 36rem;           /* the text's measure */
+    --plate: 50rem;             /* the content column; pictures take all of it */
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--ground); }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font: 400 1.125rem/1.55 var(--serif);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .page {
+    max-width: calc(var(--spine) + var(--gap) + var(--plate) + 4rem);
+    margin: 0 auto;
+    padding: 0 2rem 10rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: var(--spine) minmax(0, var(--plate));
+    column-gap: var(--gap);
+  }
+
+  /* intro: the portrait sits in the name column, the greeting starts at the spine */
+  .intro { padding-top: 7rem; align-items: center; }
+  .portrait {
+    justify-self: end;
+    width: 13rem; aspect-ratio: 1;
+    background: url(img/portrait.webp) center / cover;
+    -webkit-mask: radial-gradient(closest-side, #000 72%, transparent 100%);
+            mask: radial-gradient(closest-side, #000 72%, transparent 100%);
+    margin-right: -1.25rem;     /* the fade eats the edge; pull the face back to the spine */
+  }
+  .intro p {
+    margin: 0;
+    max-width: 38rem;
+    font-size: 1.6rem;
+    line-height: 1.42;
+    font-weight: 300;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+  .intro p + p { margin-top: 0.6em; }
+  .intro p a { border-bottom: 1px solid color-mix(in srgb, var(--ink) 30%, transparent); }
+  .intro p a:hover { border-color: var(--ink); }
+  .links {
+    margin-top: 1.4rem;
+    display: flex; flex-wrap: wrap; gap: 0 1.6rem;
+    font-size: 1.05rem;
+    color: var(--grey);
+  }
+  .links a { border-bottom: 1px solid color-mix(in srgb, var(--grey) 35%, transparent); }
+  .links a:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* the register */
+  .register { margin-top: 7rem; }
+  .entry + .entry { margin-top: 7.5rem; }
+  .entry h2 {
+    margin: 0;
+    justify-self: end;
+    text-align: right;
+    font-weight: 500;
+    font-size: 2.1rem;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    padding-top: 0.12rem;       /* sit the name's cap height on the deck's */
+  }
+  .deck {
+    margin: 0;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  .text {
+    margin: 0.85rem 0 0;
+    max-width: var(--measure);
+    color: var(--grey);
+    text-wrap: pretty;
+  }
+  figure { margin: 2rem 0 0; }
+  figure img { display: block; width: 100%; height: auto; border-radius: 6px; }
+  .go {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    color: var(--grey);
+  }
+  .go::after { content: " \2192"; }
+  .go:hover { color: var(--ink); }
+  .go + .go { margin-left: 1.6rem; }   /* a second link sits beside the first, spaced like the intro links */
+
+  .foot { margin-top: 9rem; color: var(--grey); }
+  .foot p { grid-column: 2; margin: 0; }
+
+  @media (max-width: 1100px) {
+    :root { --spine: 11rem; --gap: 2.5rem; }
+    .entry h2 { font-size: 1.6rem; }
+  }
+
+  /* phone: the spine moves to the left edge; names hang above their entry */
+  @media (max-width: 600px) {
+    .page { padding: 0 1.25rem 6rem; }
+    .row { grid-template-columns: minmax(0, 1fr); }
+    .intro { padding-top: 3rem; }
+    .portrait { justify-self: start; width: 9rem; margin: 0 0 1.5rem -1rem; }
+    .intro p { font-size: 1.32rem; }
+    .register { margin-top: 5rem; }
+    .foot { margin-top: 6rem; }
+    .foot p { grid-column: 1; }
+    .entry + .entry { margin-top: 5rem; }
+    .entry h2 { justify-self: start; text-align: left; font-size: 1.85rem; margin-bottom: 0.3rem; }
+    .deck { font-size: 1.25rem; }
+    .text { font-size: 1.05rem; }
+    figure { margin: 1.5rem -1.25rem 0; }   /* pictures run to the screen edge */
+    figure img { border-radius: 0; }
+  }
+</style>
 </head>
-
 <body>
-<div id="Content">
+<main class="page">
 
-  <h1>Jordan McKible</h1>
+  <header class="row intro">
+    <div class="portrait" role="img" aria-label="Jordan, drawn in coloured pencil"></div>
+    <div>
+      <p>Hi, I’m Jordan. I was a programmer for twenty years, and now I'm whatever you call someone with technical skills and a Claude subscription. I was an early employee at TechValidate and currently a cofounder at <a href="https://vocalvideo.com">Vocal Video</a>.</p>
+      <p>I live in Petaluma, California.</p>
+      <nav class="links">
+        <a href="https://github.com/jmckible">GitHub</a>
+        <a href="https://x.com/jmckible">Twitter</a>
+        <a class="email">first name @ last name dot com</a>
+      </nav>
+      <script>
+        // Assembled at runtime so the address never appears in the HTML for harvesters to read.
+        for (const a of document.querySelectorAll(".email")) {
+          const address = ["moc.elbikcm", "nadroj"].map(s => [...s].reverse().join("")).reverse().join("@");
+          a.href = "mailto:" + address;
+          a.textContent = address;
+        }
+      </script>
+    </div>
+  </header>
 
-  <div id="Picture">
-    <img src="images/jordan_mckible_2017_05_01.png" alt="My Face" width="200"/>
-  </div>
+  <section class="register">
 
-  <p>Hello. I live in Petaluma, CA.</p>
+    <article class="row entry">
+      <h2>Vocal Video</h2>
+      <div>
+        <p class="deck">Automagic Video Testimonials</p>
+        <p class="text">Collect video testimonials at scale with a simple link. Studio-grade videos automatically generated.</p>
+        <figure><img src="img/vocalvideo.webp" width="1600" height="1000" alt="The Vocal Video logo over the product in four steps: sharing a collection link, a customer recording an answer, the clip produced with branding and captions, and a wall of testimonials"></figure>
+        <a class="go" href="https://vocalvideo.com">vocalvideo.com</a>
+      </div>
+    </article>
 
-  <p>My email is my first name @ my last name.</p>
+    <article class="row entry">
+      <h2>pneu</h2>
+      <div>
+        <p class="deck">Gmail, designed for Omarchy</p>
+        <p class="text">A keyboard first mail client, with local storage. Designed to match your Omarchy theme and includes a top bar notifier. Conceirge setup via your agent.</p>
+        <figure><img src="img/pneu.webp" width="1600" height="1000" alt="pneu's inbox in the Tokyo Night theme, on its wallpaper, with the pneu postmark"></figure>
+        <a class="go" href="https://pneu.mckible.com">pneu.mckible.com</a>
+      </div>
+    </article>
 
-  <p><s>My resume</s>.  I am not looking for a job.  Please do not contact me for this reason. I also don't know any other Rails developers looking for jobs, thanks.</p>
+    <article class="row entry">
+      <h2>stardate</h2>
+      <div>
+        <p class="deck">Nearly 20 years of personal finance</p>
+        <p class="text">When learing Ruby on Rails in the early days, one of my first applications was a double entry bookkeeping application for my personal finances. I've tracked every transaction since. I've integrated every techical innovation of Rails from version 2 to 8.</p>
+        <figure><img src="img/stardate.webp" width="1600" height="1000" alt="Stardate's stat tiles, monthly earned and spent chart, feed and spending bars, with sample data" loading="lazy"></figure>
 
-  <ul>
-    <li><a href="https://github.com/jmckible">GitHub</a></li>
-    <li><a href="https://vocalvideo.com">Vocal Video</a></li>
-  </ul>
+        <a class="go" href="https://github.com/jmckible/stardate">github.com/jmckible/stardate</a> <!-- TODO some private strikethrough notation -->
+      </div>
+    </article>
 
-  <div id="Footer">
-    <p>Last Updated August 2024</p>
-  </div>
+    <article class="row entry">
+      <h2>es.ophag.us</h2>
+      <div>
+        <p class="deck">Never forget a recipe</p>
+        <p class="text">I love cooking and have amassed a collection of great and go-to recipes. I noticed I'd often cook something a few times and forget about it; maybe seasonality or didn't quite have it dialed in. So I started tracking every recipe, each time it was cooked, and developed a definitive version.</p>
+        <figure><img src="img/esophagus.webp" width="1600" height="1000" alt="An Esophagus recipe with its ingredients and directions, beside the index and a cook log" loading="lazy"></figure>
+        <a class="go" href="https://github.com/jmckible/esophagus">github.com/jmckible/esophagus</a>
+        <a class="go" href="https://es.ophag.us">es.ophag.us</a>
+      </div>
+    </article>
 
-</div> <!-- end #Content -->
+    <article class="row entry">
+      <h2>Dashboard</h2>
+      <div>
+        <p class="deck">A personal command center</p>
+        <p class="text">Outside of finance and cooking, this app does it all. An agent reads my RSS feed and searches out new sources. It compiles a digest four times a day, so I don't need to scroll news any more. A personal trainer collects all my running and cycling data, tracks progress, and recommends a daily workout. A music agent monitors new releases and compiles my favorite radio shows. Each day I get a grid of albums to review, which <a href="https://jordan.mckible.com/omakase">omamp</a> plays on the desktop, and my all time favorites are enshrined in <a href="https://dashboard.mckible.com/binder">the book</a>.</p>
+        <figure><img src="img/dashboard.webp" width="1600" height="1000" alt="Dashboard's new-music grid, the day's training call, the news feed and a training chart, with sample data" loading="lazy"></figure>
+      </div>
+    </article>
 
+    <article class="row entry">
+      <h2>tumblepop</h2>
+      <div>
+        <p class="deck">Remember when?</p>
+        <p class="text">A long standing idea, finally made possible with agents. We all remember bits and pieces of the past. Our own personal timeline is fuzzy about dates and things we've forgotten. tumblepop is an agent mediated approach to catalogue all the memories of your life and sharing with your friends to collectively assmeble the jigsaw puzzle of history.</p>
+        <figure><img src="img/tumblepop.webp" width="1600" height="1000" alt="A Tumblepop lifeline of chapters, a chat that adds to it, and decisions waiting, with sample data" loading="lazy"></figure>
+      </div>
+    </article>
+
+
+    <article class="row entry">
+      <h2>my omakase</h2>
+      <div>
+        <p class="deck">Everything I run on top of Omarchy</p>
+        <p class="text">Omarchy is one person’s choices; this is mine on top of them. The desk: the Drivetrain theme, whose wallpapers follow the sun and the weather; Swatch, a theme picker that retints the whole desktop live as you scrub; a bar cut down to a single pill; and vim keys everywhere. What comes in: Umber, which puts the desktop’s palette on every web page, and omamp, which plays my almost 30 year mp3 library, with Apple Music for new releases.</p>
+        <figure><img src="img/omakase.webp" width="1600" height="1000" alt="Sections of the my omakase page in cut paper: the opening, the pill bar, albums, keys and the web" loading="lazy"></figure>
+        <a class="go" href="https://jordan.mckible.com/omakase">jordan.mckible.com/omakase</a>
+      </div>
+    </article>
+
+  </section>
+
+  <footer class="row foot">
+    <p>Last updated October 2026</p>
+  </footer>
+
+</main>
 </body>
 </html>

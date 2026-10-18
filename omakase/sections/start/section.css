@@ -1,0 +1,163 @@
+/* How it started: a letter on a notebook page, folded in thirds. Every selector is under
+   #s-start; url()s resolve against this file. */
+
+#s-start {
+  --st-ink: #26325a;           /* the pen: blue-black, a letter's ink */
+  --st-body: #221c1d;
+  --st-hl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M1.5 5.2C18 3.4 40 4.6 60 3.3S88 2.6 98.6 4.1L99 15.6C84 17.2 62 16 42 17.1S12 17.8 1 16.4Z' fill='%23f3cd3a' fill-opacity='.62'/%3E%3Cpath d='M3 8C30 6.8 64 7.6 97 6.4' stroke='%23f7de6c' stroke-width='3' fill='none' opacity='.5'/%3E%3C/svg%3E");
+  --st-under: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M1 5.6C16 3.9 34 5.2 52 4.1S84 3.2 99 4.6' fill='none' stroke='%2326325a' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M8 8.2C30 7 60 7.6 92 6.8' fill='none' stroke='%2326325a' stroke-width='1.5' stroke-linecap='round' vector-effect='non-scaling-stroke' opacity='.8'/%3E%3C/svg%3E");
+  padding: 64px 16px 110px;
+}
+#s-start .st-desk { position: relative; max-width: 880px; margin: 0 auto; }
+
+/* the envelope it came in, underneath, a stamp cut through to this morning's desk */
+#s-start .st-env {
+  --k-paper: #dccaa0;
+  position: absolute; z-index: 0; right: -120px; top: -18px;
+  width: 440px; height: 270px; rotate: 7deg;
+}
+#s-start .st-flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 58%;
+  background: linear-gradient(to bottom, rgb(96 74 40 / .0), rgb(96 74 40 / .1));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  opacity: .9;
+}
+#s-start .st-stamp { position: absolute; right: 26px; top: 22px; width: 92px; height: 112px; --k-p: 12px; rotate: 3deg; }
+#s-start .st-stamp k-hole { position: absolute; inset: 7px; width: auto; aspect-ratio: auto; --k-hole-m: 0px; }
+#s-start .st-post {
+  position: absolute; right: 70px; top: 60px; width: 150px; height: 64px; rotate: -8deg; opacity: .55;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 64' fill='none' stroke='%2326325a' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='32' cy='32' r='26'/%3E%3Ccircle cx='32' cy='32' r='19' opacity='.6'/%3E%3Cpath d='M64 14C80 9 96 19 112 14S136 9 148 13M64 26C80 21 96 31 112 26S136 21 148 25M64 38C80 33 96 43 112 38S136 33 148 37M64 50C80 45 96 55 112 50S136 45 148 49'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+#s-start .st-letter { z-index: 1; }
+#s-start .k-pen { --k-pen-ink: var(--st-ink); }
+
+/* ------------------------------------------------------------ the letter
+   A page torn out along the top, folded in thirds to travel: the creases are two soft
+   bands baked into the face (--k-over), a shadow above and a catch of light below. */
+#s-start .st-letter {
+  --k-paper: color-mix(in srgb, #f7f3e8 90%, var(--light, #ede6cf));
+  --k-over: linear-gradient(180deg,
+      transparent 30.8%, rgb(96 74 40 / .035) 32.6%, rgb(96 74 40 / .075) 33.3%, rgb(255 253 246 / .3) 33.9%, rgb(255 253 246 / .1) 35%, transparent 36.4%,
+      transparent 63.8%, rgb(96 74 40 / .035) 65.8%, rgb(96 74 40 / .075) 66.6%, rgb(255 253 246 / .3) 67.2%, rgb(255 253 246 / .1) 68.3%, transparent 69.6%);
+  display: block;
+  padding: 62px clamp(22px, 6.4vw, 84px) 76px;
+  color: var(--st-body);
+  rotate: -.35deg;
+}
+
+/* the hunk header, and the headline with its one correction under tissue */
+#s-start .st-hunk { font-size: 13px; }
+#s-start .st-h {
+  --k-size: clamp(34px, 4.6vw, 62px);
+  line-height: 1.42;
+  margin: 30px 0 40px;
+  max-width: 15.5em;
+  color: var(--st-ink);
+}
+#s-start .st-fix { position: relative; display: inline-block; }
+#s-start .st-was { color: #a89f8f; }
+#s-start .st-tis { position: absolute; inset: .14em -.18em .04em -.14em; z-index: 1; rotate: -2deg; --k-p: 10px; }
+/* the pen goes on after the tissue: the correction, in the flow, a little raised */
+#s-start .st-now { display: inline-block; margin-left: .22em; rotate: -4deg; translate: 0 -.12em; }
+#s-start .st-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* the highlighter, and the pen's underline: backgrounds, so they wrap line by line */
+#s-start .st-hl {
+  font-style: normal; font-weight: inherit;
+  padding: 0 .1em; margin: 0 -.1em;
+  background: var(--st-hl) 0 62% / 100% .7em no-repeat;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+#s-start .st-ul {
+  padding-bottom: .12em;
+  background: var(--st-under) 0 100% / 100% .34em no-repeat;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+/* Quattro, ringed in the pen */
+#s-start .st-ring { position: relative; font-weight: 600; white-space: nowrap; }
+#s-start .st-ring::after {
+  content: ''; position: absolute; inset: -.42em -.55em -.36em -.5em; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 50' preserveAspectRatio='none'%3E%3Cpath d='M88 7C66 1 24 3 9 15S10 45 58 46 116 38 112 21 70 4 40 9' fill='none' stroke='%2326325a' stroke-width='1.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+
+/* ------------------------------------------------------------ the story: one column of the book face */
+#s-start .st-story { max-width: 34em; font-family: var(--r-book); font-size: 20px; line-height: 1.64; color: var(--st-body); hanging-punctuation: first; }
+#s-start .st-story p { margin: 0 0 1.05em; }
+#s-start .st-story strong { font-weight: 600; }
+#s-start .st-story code { font-size: .8em; padding: .08em .3em; border-radius: 3px; background: rgb(96 74 40 / .08); }
+
+/* ------------------------------------------------------------ the cover sheet, taped in */
+/* the creases belong to the letter alone, not to what's taped to it */
+#s-start .st-letter :is(.k-paper, .k-tissue, .k-slip) { --k-over: linear-gradient(transparent, transparent); }
+
+/* the cover sheet: grey paper, a four-by-four of torn windows onto the morning's
+   wallpapers, the wordmark across the third row */
+#s-start .st-sheet {
+  --s: min(620px, 82%);
+  position: relative; display: block; z-index: 2;
+  width: var(--s); aspect-ratio: 1;
+  margin: 20px calc(-1 * clamp(22px, 6.4vw, 84px) - 34px) 72px auto;
+}
+#s-start .st-sheet .tis { position: absolute; z-index: 0; }
+#s-start .st-sheet .grid { position: absolute; inset: 5.5%; z-index: 1; display: grid;
+  grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 3.2%; }
+#s-start .st-sheet .grid k-hole { aspect-ratio: auto; width: 100%; height: 100%; --k-hole-m: 5px; }
+#s-start .st-sheet .mark { grid-column: 2 / 5; grid-row: 3; position: relative; display: flex; flex-direction: column; justify-content: center; padding-left: 4%; container-type: inline-size; }
+#s-start .st-sheet .mark k-wordmark { width: 96%; }
+#s-start .st-sheet .mark .tag { --k-size: 4.1cqw; margin-top: 2%; white-space: nowrap; }
+
+/* ------------------------------------------------------------ p.s.: the git log, on a strip */
+#s-start .st-ps { margin-top: 30px; }
+#s-start .st-ps-h { --k-size: 30px; rotate: -2deg; margin: 0 0 16px; color: var(--st-ink); }
+#s-start .st-log {
+  --k-paper: #fcfaf3;
+  display: block; max-width: 40em;
+  margin-left: clamp(0px, 3vw, 40px);
+  padding: 26px 30px 24px;
+  font-family: var(--k-code); font-size: 14.5px; line-height: 1.45;
+  rotate: .7deg;
+}
+#s-start .st-log a {
+  display: grid; grid-template-columns: 5.4em 1fr; gap: 1em;
+  padding: .32em .3em; margin: 0 -.3em;
+  text-decoration: none; color: var(--st-body);
+}
+#s-start .st-log b { font-weight: 600; color: #9a6410; }
+#s-start .st-log a:hover span, #s-start .st-log a:focus-visible span {
+  background: var(--st-hl) 0 60% / 100% .9em no-repeat;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+
+/* ------------------------------------------------------------ as you read: the pen catches up */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #s-start .st-hl, #s-start .st-ul {
+      animation: start-swipe linear both; animation-timeline: view(); animation-range: entry 90% cover 42%;
+    }
+    #s-start .st-ul { animation-name: start-under; }
+    #s-start .st-ring::after {
+      animation: start-write linear both; animation-timeline: view(); animation-range: entry 60% cover 32%;
+    }
+    #s-start .st-sheet {
+      animation: start-drop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%;
+    }
+  }
+}
+@keyframes start-swipe { from { background-size: 0% .7em; } }
+@keyframes start-under { from { background-size: 0% .34em; } }
+@keyframes start-write { from { clip-path: inset(-30% 100% -30% -30%); } to { clip-path: inset(-30% -30% -30% -30%); } }
+@keyframes start-drop  { from { transform: translate(40px, 70px) rotate(5deg); } }
+
+/* ------------------------------------------------------------ phones */
+@media (max-width: 760px) {
+  #s-start { padding: 64px 10px 80px; }
+  #s-start .st-env { right: -70px; top: -62px; width: 250px; height: 150px; rotate: 6deg; }
+  #s-start .st-stamp { width: 54px; height: 64px; right: 92px; top: 8px; }
+  #s-start .st-post { display: none; }
+  #s-start .st-letter { padding: 46px 22px 54px; rotate: -.2deg; }
+  #s-start .st-h { margin: 26px 0 30px; }
+  #s-start .st-story { font-size: 18px; line-height: 1.62; }
+  #s-start .st-sheet { --s: auto; margin: 10px -14px 54px -8px; }
+  #s-start .st-log { margin-left: -8px; margin-right: -12px; padding: 20px 18px; font-size: 13px; }
+  #s-start .st-log a { grid-template-columns: 1fr; gap: 0; padding: .45em .3em; }
+}

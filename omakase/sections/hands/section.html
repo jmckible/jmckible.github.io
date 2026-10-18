@@ -1,0 +1,180 @@
+<!-- The hands: a few felt keys laid on the ground below a paper desk (a browser on the
+     left, workspace 1 with its pockets on the right). W is the key that works: it takes a
+     tab off the browser, or tucks the focused card back into its pocket. S brings Slack
+     out, H and L move the focus. Each key's typed slip says what it does now; stock lies
+     under tissue beneath it.
+     Every sentence that is not the owner's existing copy is marked NEW COPY. -->
+<div class="hands">
+
+  <header class="hands-head">
+    <!-- NEW COPY (working title from the brief) -->
+    <h2 class="k-pen">the hands already knew it</h2>
+    <!-- MAC: the one place the page leans on the Mac. Unverified; delete this line and
+         nothing else moves. NEW COPY -->
+    <p class="k-pen hands-mac">as ⌘W, off the Mac.</p>
+    <!-- NEW COPY -->
+    <p class="hands-lede">The stock keymap is DHH's hands. These keys are mine.</p>
+  </header>
+
+  <div class="hands-stage" id="hands-desk">
+
+    <div class="hands-desk">
+    <!-- the browser: paper tabs on a cream sheet -->
+    <div class="hands-win hands-browser" role="button" tabindex="0" aria-pressed="true" aria-label="Focus the browser">
+      <p class="hands-focus k-pen" aria-hidden="true">
+        <svg viewBox="0 0 90 60"><path d="M6 8c22-4 46 2 58 18s12 22 12 28"/><path d="M66 44l10 12 7-15"/></svg>
+        focused
+      </p>
+      <div class="hands-tabs" aria-hidden="true"></div>
+      <div class="hands-page k-paper k-cream" data-seed="hands-page">
+        <span class="k-slip hands-url" data-seed="hands-url"></span>
+        <p class="k-pen hands-title"></p>
+        <p class="hands-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></p>
+        <span class="hands-left k-type" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <!-- workspace 1: a blue sheet with a library pocket for each docked app, in its slot -->
+    <div class="hands-win hands-ws" role="button" tabindex="0" aria-pressed="false" aria-label="Focus the docked app on workspace 1">
+      <p class="hands-focus k-pen" aria-hidden="true">
+        <svg viewBox="0 0 90 60"><path d="M84 8C62 4 38 10 26 26S14 48 14 54"/><path d="M24 44L14 56 7 41"/></svg>
+        focused
+      </p>
+      <div class="hands-sheet k-paper k-blue" data-seed="hands-sheet">
+        <div class="hands-sheet-head">
+          <span class="k-slip" data-seed="hands-ws1" data-tilt="-1.5">WORKSPACE 1</span>
+          <span class="k-slip k-yellow hands-tag" data-seed="hands-tag" data-tilt="2">tag: docked</span>
+        </div>
+        <div class="hands-rack">
+          <div class="hands-slot" data-app="slack" data-state="parked">
+            <div class="hands-card k-paper k-cream" data-seed="hands-c-slack">
+              <p class="k-pen hands-app">Slack</p>
+              <p class="hands-scrawl" aria-hidden="true"><i></i><i></i><i></i></p>
+            </div>
+            <div class="hands-pk k-paper k-manila" data-seed="hands-pk-slack"><b>SLACK</b><span>SUPER+S</span></div>
+          </div>
+          <div class="hands-slot" data-app="discord" data-state="parked">
+            <div class="hands-card k-paper k-cream" data-seed="hands-c-discord">
+              <p class="k-pen hands-app">Discord</p>
+            </div>
+            <div class="hands-pk k-paper k-manila" data-seed="hands-pk-discord"><b>DISCORD</b><span>SUPER+D</span></div>
+          </div>
+          <div class="hands-slot" data-app="mail" data-state="out">
+            <div class="hands-card k-paper k-cream" data-seed="hands-c-mail">
+              <p class="k-pen hands-app">McKible Mail</p>
+              <ul class="hands-inbox">
+                <li><i></i><em class="k-type">archiving…</em></li>
+                <li><i></i><em class="k-type">archiving…</em></li>
+              </ul>
+            </div>
+            <div class="hands-pk k-paper k-manila" data-seed="hands-pk-mail"><b>MCKIBLE MAIL</b><span>SUPER+CTRL+M</span></div>
+          </div>
+          <div class="hands-slot" data-app="vmail" data-state="parked">
+            <div class="hands-card k-paper k-cream" data-seed="hands-c-vmail">
+              <p class="k-pen hands-app">Vocal Mail</p>
+            </div>
+            <div class="hands-pk k-paper k-manila" data-seed="hands-pk-vmail"><b>VOCAL MAIL</b><span>SUPER+ALT+M</span></div>
+          </div>
+        </div>
+        <p class="k-pen hands-parked" aria-live="polite"></p>
+      </div>
+    </div>
+
+    </div>
+
+    <div class="hands-board">
+    <!-- the keys, cut from felt and laid down where the left hand finds them -->
+    <div class="hands-keys hands-keys-l">
+      <button type="button" class="hands-key hands-w k-felt k-yellow" data-seed="hands-kw" data-key="w" aria-label="SUPER+W: park the docked app, or close the tab">W</button>
+      <button type="button" class="hands-key hands-s k-felt k-blue" data-seed="hands-ks" data-key="s" aria-label="SUPER+S: summon Slack">S</button>
+      <span class="hands-key hands-super k-felt k-black" data-seed="hands-ksuper" aria-hidden="true">super</span>
+    </div>
+
+    <!-- what each key does now, on typed slips; stock under tissue beneath -->
+    <div class="hands-says">
+    <div class="hands-say hands-say-w">
+      <span class="k-slip k-yellow" data-seed="hands-sw1" data-tilt="-.8"><b>+</b> SUPER+W &nbsp;→&nbsp; park it, if the window is tagged docked</span>
+      <span class="k-slip k-yellow" data-seed="hands-sw2" data-tilt=".6"><b>+</b> SUPER+W &nbsp;→&nbsp; inject CTRL+W for everything else</span>
+      <span class="hands-stock" data-tilt="1.4"><span class="k-slip k-grey" data-seed="hands-sw0"><em>stock</em> SUPER+W &nbsp;→&nbsp; Close window</span><i class="k-tissue k-cream" data-seed="hands-tw"></i></span>
+    </div>
+    <div class="hands-say hands-say-s">
+      <span class="k-slip k-blue" data-seed="hands-ss1" data-tilt=".7"><b>+</b> docked: summoned floating onto workspace 1, at a fixed spot, on one key</span>
+      <span class="hands-stock" data-tilt="-1.2"><span class="k-slip k-grey" data-seed="hands-ss0"><em>stock</em> SUPER+S &nbsp;→&nbsp; Toggle scratchpad</span><i class="k-tissue k-cream" data-seed="hands-ts"></i></span>
+    </div>
+    </div>
+
+    <div class="hands-right">
+    <!-- H J K L: one strip of grey felt cut into four and sewn back together -->
+    <div class="hands-keys hands-keys-r">
+      <div class="hands-strip">
+        <button type="button" class="hands-key k-felt k-grey" data-seed="hands-kh" data-key="h" aria-label="SUPER+H: focus the window on the left">H</button><i class="hands-join" aria-hidden="true"></i><button type="button" class="hands-key k-felt k-grey" data-seed="hands-kj" data-key="j" aria-label="SUPER+J: focus the window below">J</button><i class="hands-join" aria-hidden="true"></i><button type="button" class="hands-key k-felt k-grey" data-seed="hands-kk" data-key="k" aria-label="SUPER+K: focus the window above">K</button><i class="hands-join" aria-hidden="true"></i><button type="button" class="hands-key k-felt k-grey" data-seed="hands-kl" data-key="l" aria-label="SUPER+L: focus the window on the right">L</button>
+      </div>
+    </div>
+
+    <div class="hands-say hands-say-h">
+      <!-- NEW COPY -->
+      <span class="k-slip" data-seed="hands-sh1" data-tilt="-.6"><b>+</b> SUPER+H J K L &nbsp;→&nbsp; focus left, down, up, right</span>
+      <!-- NEW COPY -->
+      <span class="hands-stock" data-tilt="1"><span class="k-slip k-grey" data-seed="hands-sh0"><em>stock</em> J split &nbsp;·&nbsp; K Keybindings &nbsp;·&nbsp; L layout &nbsp;·&nbsp; H unbound</span><i class="k-tissue k-cream" data-seed="hands-th"></i></span>
+    </div>
+
+    <!-- NEW COPY -->
+    <p class="hands-hint k-type">press W. H and L move the focus; S brings Slack back.</p>
+    </div>
+    </div>
+  </div>
+
+  <!-- the reading text: one sheet, a part for each key, its felt key as the heading -->
+  <article class="hands-read k-paper k-cream" data-seed="hands-read" data-tape="tl tr">
+
+    <section class="hands-part">
+      <h3><kbd class="k-felt k-yellow" data-seed="hands-rw">W</kbd><span class="k-pen">closes a tab, or parks an app, and knows which</span></h3>
+      <!-- NEW COPY: the first two sentences -->
+      <p>Stock, SUPER+W closes the window, the same as SUPER+Q. Then keyd made it CTRL+W, whatever the window was.</p>
+      <p>A Chromium app window is a single tab, so CTRL+W took the whole renderer down with whatever the page still had in flight. A slow Gmail lost archives on the way out. keyd rewrote the key below the compositor and could never be window-aware.</p>
+      <p>So tab-closing moved up into Hyprland: park when the focused window carries the <code>docked</code> tag, inject CTRL+W otherwise, the same way Omarchy's universal clipboard binds inject theirs. <b>SUPER+Q still closes.</b></p>
+      <dl class="hands-how">
+        <dt><span class="k-slip k-blue" data-seed="hands-h1">what it is</span></dt>
+        <dd>One bind in <code>bindings.lua</code>, reading <code>hl.get_active_window().tags</code>.</dd>
+        <dt><span class="k-slip k-blue" data-seed="hands-h2">the tag</span></dt>
+        <dd>Emitted by the same generator that lays out the scratchpads, so the bind and the roster can't disagree about what is docked.</dd>
+        <dt><span class="k-slip k-blue" data-seed="hands-h3">keyd</span></dt>
+        <!-- NEW COPY: the second sentence -->
+        <dd>Stops remapping the key. Its templates keep one remap block each. What's left is SUPER+R to CTRL+R, which doesn't care which window has focus.</dd>
+      </dl>
+      <p class="hands-see"><a class="k-slip" href="https://github.com/jmckible/drivetrain/commit/938af9c" data-seed="hands-l1">938af9c</a></p>
+    </section>
+
+    <hr class="k-seam" data-thread="ink">
+
+    <section class="hands-part">
+      <h3><kbd class="k-felt k-blue" data-seed="hands-rs">S</kbd><span class="k-pen">fixed and dismissible Slack and Gmail</span></h3>
+      <!-- NEW COPY: this sentence, around the owner's stock line -->
+      <p>Stock has one scratchpad on SUPER+S. Past that, Slack and Gmail hold tiles all day, or hide on a workspace you forget.</p>
+      <p>Communication apps are glanced at, not worked in. Each gets a pinned box on the first workspace, always in the same place, and a key that either focuses it or summons it. Park it and it is gone; press the key and it is back where it was.</p>
+      <p>The geometry is generated from the live monitor, the bar height and the gap settings, never hand-written. A path unit regenerates it whenever any of those change, so a scale change from Omarchy's own Display panel cannot leave the grid stale.</p>
+      <dl class="hands-how">
+        <dt><span class="k-slip k-blue" data-seed="hands-h4">what it is</span></dt>
+        <dd>pyprland scratchpads, a generator that writes both its config and the Hyprland window rules, and a bar widget.</dd>
+        <dt><span class="k-slip k-blue" data-seed="hands-h5">the keys</span></dt>
+        <!-- NEW COPY -->
+        <dd>Slack <code>SUPER+S</code>, Discord <code>SUPER+D</code>, McKible Mail <code>SUPER+CTRL+M</code>, Vocal Mail <code>SUPER+ALT+M</code>.</dd>
+        <dt><span class="k-slip k-blue" data-seed="hands-h6">unread</span></dt>
+        <dd>Slack's bar icon lights from its tray item, so hidden and signed-out look different. Slack publishes a StatusNotifierItem whose tooltip is a closed set of three strings. Matching them literally is the whole parser.</dd>
+        <dt><span class="k-slip k-blue" data-seed="hands-h7">layouts</span></dt>
+        <dd>A 3-column grid on the desktop, a 2×2 on the laptop. Same keys on both.</dd>
+      </dl>
+      <p class="hands-see"><a class="k-slip" href="https://github.com/jmckible/drivetrain/commit/b324753" data-seed="hands-l2">b324753</a> <a class="k-slip" href="https://github.com/jmckible/drivetrain/commit/33cacf2" data-seed="hands-l3">33cacf2</a></p>
+    </section>
+
+    <hr class="k-seam" data-thread="ink">
+
+    <section class="hands-part">
+      <h3><kbd class="k-felt k-grey" data-seed="hands-rh">HJKL</kbd><span class="k-pen">a second set of arrows</span></h3>
+      <p>Reaching for the arrow cluster is a stretch, so hjkl now does what the arrows do and the arrows keep working.</p>
+      <!-- NEW COPY -->
+      <p>Stock had three of them busy. Toggle split moved to SUPER+ALT+J and the keybindings cheatsheet to SUPER+ALT+K; the layout toggle on L went, never used.</p>
+      <p class="hands-see"><a class="k-slip" href="https://github.com/jmckible/drivetrain/commit/ff36b5d" data-seed="hands-l4">ff36b5d</a></p>
+    </section>
+  </article>
+</div>
